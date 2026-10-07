@@ -1,50 +1,65 @@
-# .
+# Cargofy — Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+> 🚧 **Work in progress** — this project is under active development as the final capstone project of the Factoría F5 Full Stack Development Bootcamp.
 
-## Recommended IDE Setup
+Cargofy is a web application for tracking international shipments. Clients can follow the status of their shipments in real time, while operators and administrators manage shipments and update their status throughout the delivery process.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Tech Stack
 
-## Recommended Browser Setup
+- [Vue 3](https://vuejs.org/) — frontend framework
+- [Vite](https://vite.dev/) — build tool and dev server
+- [Vue Router](https://router.vuejs.org/) — client-side routing
+- [Pinia](https://pinia.vuejs.org/) — state management
+- [Vitest](https://vitest.dev/) — component testing
+- ESLint + Prettier — code quality and formatting
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## User Roles
 
-## Customize configuration
+| Role         | Permissions                                 |
+| ------------ | ------------------------------------------- |
+| **Client**   | View own shipments and their status history |
+| **Operator** | Create shipments and update their status    |
+| **Admin**    | Full access to shipments and users          |
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Planned Pages
 
-## Project Setup
+- Sign In
+- Create Account
+- Dashboard
+- Shipments List
+- Shipment Detail
+- New Shipment
+- Account & Settings
 
-```sh
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20 or higher
+- The [Cargofy backend](https://github.com/Raana-1375/f5-digital-academy-cargofy-backend) running on `http://localhost:8080`
+
+### Installation
+
+```bash
+git clone https://github.com/Raana-1375/f5-digital-academy-cargofy-frontend.git
+cd f5-digital-academy-cargofy-frontend
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Available Scripts
 
-```sh
-npm run dev
-```
+| Command             | Description                                             |
+| ------------------- | ------------------------------------------------------- |
+| `npm run dev`       | Start the development server at `http://localhost:5173` |
+| `npm run build`     | Build for production                                    |
+| `npm run test:unit` | Run component tests with Vitest                         |
+| `npm run lint`      | Lint the code                                           |
+| `npm run format`    | Format the code with Prettier                           |
 
-### Compile and Minify for Production
+## Related Repository
 
-```sh
-npm run build
-```
+- **Backend:** [f5-digital-academy-cargofy-backend](https://github.com/Raana-1375/f5-digital-academy-cargofy-backend) — Java, Spring Boot, Spring Security, MySQL (Docker)
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Author
 
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+**Rana** — [@Raana-1375](https://github.com/Raana-1375)
