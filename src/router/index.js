@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-import SignInView from '../views/SignInView.vue'
-import CreateAccountView from '../views/CreateAccountView.vue'
+import { useAuthStore } from '@/stores/auth'
+import SignInView from '@/views/SignInView.vue'
+import CreateAccountView from '@/views/CreateAccountView.vue'
+import DashboardView from '@/views/DashboardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,20 @@ const router = createRouter({
     { path: '/', redirect: '/login' },
     { path: '/login', name: 'login', component: SignInView },
     { path: '/register', name: 'register', component: CreateAccountView },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      meta: { requiresAuth: true },
+    },
   ],
+})
+
+router.beforeEach((to) => {
+  const auth = useAuthStore()
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return { name: 'login' }
+  }
 })
 
 export default router
