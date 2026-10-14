@@ -36,6 +36,16 @@ export const useAuthStore = defineStore('auth', () => {
     setSession(data)
   }
 
+  async function register(details) {
+    const data = await request('/auth/register', { method: 'POST', body: details })
+
+    if (data?.token) {
+      setSession(data)
+    } else {
+      await login({ email: details.email, password: details.password })
+    }
+  }
+
   function logout() {
     token.value = null
     user.value = null
@@ -43,5 +53,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem(USER_KEY)
   }
 
-  return { token, user, isAuthenticated, role, login, logout }
+  return { token, user, isAuthenticated, role, login, register, logout }
 })
