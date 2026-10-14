@@ -1,0 +1,66 @@
+:root {
+  /* Brand colors (from Figma) */
+  --color-primary: #2563eb;
+  --color-accent: #fd761a;
+
+  /* Surfaces */
+  --color-bg: #f9f9ff;
+  --color-card: #ffffff;
+  --color-soft: #f0f3ff;
+  --color-icon-bg: #e9effd;
+
+  /* Text and status */
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-success: #006329;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
