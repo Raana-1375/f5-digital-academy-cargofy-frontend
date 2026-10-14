@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
+import '../assets/auth.css'
 import logo from '../assets/logo.png'
 import { useAuthStore } from '../stores/auth'
 import { validateSignUp } from '../utils/validation'
@@ -207,64 +208,6 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
-.auth-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 24px 16px;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 480px;
-  padding: 40px 32px;
-  background-color: var(--color-card);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
-}
-
-.auth-logo {
-  width: 180px;
-  margin: 0 auto 24px;
-}
-
-.auth-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.auth-subtitle {
-  margin-top: 8px;
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.auth-form {
-  margin-top: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  padding: 0;
-  border: none;
-}
-
-.field > label,
-.field > legend {
-  padding: 0;
-  font-weight: 600;
-}
-
 .optional {
   float: right;
   font-weight: 400;
@@ -272,40 +215,19 @@ async function handleSubmit() {
   color: var(--color-text-muted);
 }
 
-.field input[type='text'],
-.field input[type='email'],
-.field input[type='password'] {
-  width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  background-color: var(--color-soft);
-  color: var(--color-text);
-}
-
-.field input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
-.field input.invalid {
-  border-color: #dc2626;
-}
-
 .role-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .role-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 14px 40px 14px 14px;
+  gap: 2px;
+  padding: 12px 40px 12px 14px;
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   background-color: var(--color-soft);
@@ -321,7 +243,7 @@ async function handleSubmit() {
 .role-card::after {
   content: '';
   position: absolute;
-  top: 14px;
+  top: 12px;
   right: 14px;
   width: 18px;
   height: 18px;
@@ -348,80 +270,11 @@ async function handleSubmit() {
 }
 
 .role-description {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-}
-
-.password-wrapper {
-  position: relative;
-}
-
-.password-wrapper input {
-  padding-right: 48px;
-}
-
-.toggle-password {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  display: flex;
-  padding: 4px;
-  border: none;
-  background: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.field-error,
-.server-error {
-  font-size: 0.875rem;
-  color: #dc2626;
-}
-
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 52px;
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: #ffffff;
-}
-
-.btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.switch-auth {
-  margin-top: 24px;
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.switch-auth a {
-  font-weight: 600;
-}
-
-.auth-footer {
-  text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
 @media (max-width: 480px) {
-  .auth-card {
-    padding: 32px 20px;
-  }
-
   .role-cards {
     grid-template-columns: 1fr;
   }
