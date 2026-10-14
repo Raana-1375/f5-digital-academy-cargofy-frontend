@@ -18,11 +18,12 @@ export async function request(path, { method = 'GET', body } = {}) {
     headers.Authorization = `Bearer ${token}`
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  })
+  const options = { method, headers }
+  if (body) {
+    options.body = JSON.stringify(body)
+  }
+
+  const response = await fetch(`${API_URL}${path}`, options)
 
   const data = await response.json().catch(() => null)
 
