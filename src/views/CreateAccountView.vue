@@ -259,8 +259,8 @@ async function handleSubmit() {
   border: none;
 }
 
-.field label,
-.field legend {
+.field > label,
+.field > legend {
   padding: 0;
   font-weight: 600;
 }
