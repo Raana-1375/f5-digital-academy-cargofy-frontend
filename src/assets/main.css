@@ -14,6 +14,16 @@
   --color-text-muted: #64748b;
   --color-success: #006329;
 
+  /* Shipment status colors (from Figma) */
+  --status-preparing-bg: #dce2f3;
+  --status-preparing-text: #475569;
+  --status-transit-bg: #e2e8f8;
+  --status-transit-text: #004ac6;
+  --status-customs-bg: #ffdbca;
+  --status-customs-text: #9c3d00;
+  --status-delivered-bg: #7ffc97;
+  --status-delivered-text: #006329;
+
   /* Shape */
   --radius-sm: 8px;
   --radius-md: 12px;
