@@ -6,3 +6,7 @@ export function fetchShipments({ status, search, page = 0, size = 10 } = {}) {
   if (search) params.set('search', search)
   return request(`/shipments?${params}`)
 }
+
+export function fetchShipmentDetail(id) {
+  return request(`/shipments/${id}`)
+}
