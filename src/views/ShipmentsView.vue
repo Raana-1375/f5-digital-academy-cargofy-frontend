@@ -3,9 +3,11 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useShipmentsStore } from '@/stores/shipments'
 import AppNav from '@/components/AppNav.vue'
 import ShipmentListItem from '@/components/ShipmentListItem.vue'
+import { usePermissions } from '@/composables/usePermissions'
 
 const store = useShipmentsStore()
 const searchText = ref(store.search)
+const { canCreateShipment } = usePermissions()
 let searchTimer = null
 
 const tabs = [
@@ -40,7 +42,9 @@ onBeforeUnmount(() => {
           <h1>Shipments</h1>
           <p>Global multi-modal active freight</p>
         </div>
-        <router-link to="/shipments/new" class="shipments__create">+ New Shipment</router-link>
+        <router-link v-if="canCreateShipment" to="/shipments/new" class="shipments__create">
+          + New Shipment
+        </router-link>
       </div>
 
       <label class="shipments__search">
