@@ -55,3 +55,23 @@ export function validateSignUp({ fullName, email, password, confirmPassword, rol
 
   return errors
 }
+
+export const NOTE_MAX_LENGTH = 300
+
+export function validateNewShipment({ origin, destination, note }) {
+  const errors = {}
+
+  if (!origin || !origin.trim()) {
+    errors.origin = 'Origin is required'
+  }
+
+  if (!destination || !destination.trim()) {
+    errors.destination = 'Destination is required'
+  }
+
+  if (note && note.length > NOTE_MAX_LENGTH) {
+    errors.note = `Notes must be at most ${NOTE_MAX_LENGTH} characters`
+  }
+
+  return errors
+}

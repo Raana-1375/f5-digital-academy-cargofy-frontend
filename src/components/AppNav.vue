@@ -1,3 +1,9 @@
+<script setup>
+import { usePermissions } from '@/composables/usePermissions'
+
+const { canCreateShipment } = usePermissions()
+</script>
+
 <template>
   <nav class="app-nav" aria-label="Main navigation">
     <router-link to="/dashboard" class="app-nav__item">
@@ -38,7 +44,12 @@
       <span>Shipments</span>
     </router-link>
 
-    <router-link to="/shipments/new" class="app-nav__fab" aria-label="Create new shipment">
+    <router-link
+      v-if="canCreateShipment"
+      to="/shipments/new"
+      class="app-nav__fab"
+      aria-label="Create new shipment"
+    >
       <svg
         viewBox="0 0 24 24"
         width="26"

@@ -5,6 +5,7 @@ import CreateAccountView from '@/views/CreateAccountView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import ShipmentsView from '@/views/ShipmentsView.vue'
 import ShipmentDetailView from '@/views/ShipmentDetailView.vue'
+import NewShipmentView from '@/views/NewShipmentView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/shipments/new',
+      name: 'new-shipment',
+      component: NewShipmentView,
+      meta: { requiresAuth: true, roles: ['OPERATOR', 'ADMIN'] },
+    },
+    {
       path: '/shipments/:id(\\d+)',
       name: 'shipment-detail',
       component: ShipmentDetailView,
@@ -37,6 +44,9 @@ router.beforeEach((to) => {
   const auth = useAuthStore()
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
     return { name: 'login' }
+  }
+  if (to.meta.roles && !to.meta.roles.includes(auth.role)) {
+    return { name: 'dashboard' }
   }
 })
 

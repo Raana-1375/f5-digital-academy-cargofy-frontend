@@ -10,3 +10,7 @@ export function fetchShipments({ status, search, page = 0, size = 10 } = {}) {
 export function fetchShipmentDetail(id) {
   return request(`/shipments/${id}`)
 }
+
+export function createShipment(payload) {
+  return request('/shipments', { method: 'POST', body: payload })
+}
