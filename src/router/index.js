@@ -4,6 +4,7 @@ import SignInView from '@/views/SignInView.vue'
 import CreateAccountView from '@/views/CreateAccountView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import ShipmentsView from '@/views/ShipmentsView.vue'
+import ShipmentDetailView from '@/views/ShipmentDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,12 @@ const router = createRouter({
       path: '/shipments',
       name: 'shipments',
       component: ShipmentsView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/shipments/:id(\\d+)',
+      name: 'shipment-detail',
+      component: ShipmentDetailView,
       meta: { requiresAuth: true },
     },
   ],
