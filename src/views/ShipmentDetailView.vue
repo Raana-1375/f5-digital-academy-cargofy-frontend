@@ -5,11 +5,15 @@ import { useShipmentDetailStore } from '@/stores/shipmentDetail'
 import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
 import AppNav from '@/components/AppNav.vue'
+import { usePermissions } from '@/composables/usePermissions'
+import UpdateStatusModal from '@/components/UpdateStatusModal.vue'
 import StatusTimeline from '@/components/StatusTimeline.vue'
 
 const route = useRoute()
 const store = useShipmentDetailStore()
 const copied = ref(false)
+const { canUpdateStatus } = usePermissions()
+const showStatusModal = ref(false)
 
 const statusInfo = computed(() => getStatusInfo(store.status))
 
@@ -21,6 +25,16 @@ async function copyTrackingNumber() {
   } catch {
     copied.value = false
   }
+}
+
+function openStatusModal() {
+  store.updateError = ''
+  showStatusModal.value = true
+}
+
+async function submitStatus(payload) {
+  const updated = await store.updateStatus(route.params.id, payload)
+  if (updated) showStatusModal.value = false
 }
 
 onMounted(() => {
@@ -83,6 +97,14 @@ watch(
                 {{ statusInfo.label }}
               </span>
             </div>
+            <button
+              v-if="canUpdateStatus"
+              type="button"
+              class="detail__update"
+              @click="openStatusModal"
+            >
+              Update Status
+            </button>
           </section>
 
           <section class="card route">
@@ -133,6 +155,15 @@ watch(
           <StatusTimeline :history="store.history" />
         </div>
       </div>
+
+      <UpdateStatusModal
+        v-if="showStatusModal"
+        :current-status="store.status"
+        :submitting="store.updating"
+        :error="store.updateError"
+        @submit="submitStatus"
+        @cancel="showStatusModal = false"
+      />
     </main>
   </div>
 </template>
@@ -212,6 +243,19 @@ watch(
   border: none;
   background: none;
   color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.detail__update {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
   cursor: pointer;
 }
 

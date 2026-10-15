@@ -14,3 +14,9 @@ export function fetchShipmentDetail(id) {
 export function createShipment(payload) {
   return request('/shipments', { method: 'POST', body: payload })
 }
+export function updateShipmentStatus(id, { status, note }) {
+  return request(`/shipments/${id}/status`, {
+    method: 'POST',
+    body: { status, note },
+  })
+}

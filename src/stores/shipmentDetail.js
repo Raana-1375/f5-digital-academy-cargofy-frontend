@@ -1,11 +1,13 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { fetchShipmentDetail } from '@/services/shipmentService'
+import { fetchShipmentDetail, updateShipmentStatus } from '@/services/shipmentService'
 
 export const useShipmentDetailStore = defineStore('shipmentDetail', () => {
   const shipment = ref(null)
   const loading = ref(false)
   const error = ref('')
+  const updating = ref(false)
+  const updateError = ref('')
 
   let latestRequest = 0
 
@@ -22,11 +24,14 @@ export const useShipmentDetailStore = defineStore('shipmentDetail', () => {
     return history.value.at(-1)?.status ?? ''
   })
 
-  async function loadShipment(id) {
+  // With silent: true the current shipment stays visible while it reloads
+  async function loadShipment(id, { silent = false } = {}) {
     const requestId = ++latestRequest
-    loading.value = true
+    if (!silent) {
+      loading.value = true
+      shipment.value = null
+    }
     error.value = ''
-    shipment.value = null
     try {
       const result = await fetchShipmentDetail(id)
       if (requestId !== latestRequest) return
@@ -39,5 +44,31 @@ export const useShipmentDetailStore = defineStore('shipmentDetail', () => {
     }
   }
 
-  return { shipment, loading, error, history, status, loadShipment }
+  // Returns true when the status was updated, so the view can close the form
+  async function updateStatus(id, { status, note }) {
+    updating.value = true
+    updateError.value = ''
+    try {
+      await updateShipmentStatus(id, { status, note })
+      await loadShipment(id, { silent: true })
+      return true
+    } catch (err) {
+      updateError.value = err.message
+      return false
+    } finally {
+      updating.value = false
+    }
+  }
+
+  return {
+    shipment,
+    loading,
+    error,
+    updating,
+    updateError,
+    history,
+    status,
+    loadShipment,
+    updateStatus,
+  }
 })

@@ -5,6 +5,12 @@ const STATUS_INFO = {
   DELIVERED: { label: 'Delivered', tone: 'delivered' },
 }
 
+// Statuses in shipment lifecycle order, used by the status select
+export const STATUS_OPTIONS = ['PREPARING', 'IN_TRANSIT', 'CUSTOMS', 'DELIVERED'].map((value) => ({
+  value,
+  label: STATUS_INFO[value].label,
+}))
+
 export function getStatusInfo(status) {
   return STATUS_INFO[status] ?? { label: status, tone: 'preparing' }
 }
