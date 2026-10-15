@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import SignInView from '@/views/SignInView.vue'
 import CreateAccountView from '@/views/CreateAccountView.vue'
 import DashboardView from '@/views/DashboardView.vue'
+import ShipmentsView from '@/views/ShipmentsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,12 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/shipments',
+      name: 'shipments',
+      component: ShipmentsView,
       meta: { requiresAuth: true },
     },
   ],
