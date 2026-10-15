@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useDashboardStore } from '@/stores/dashboard'
+import { usePermissions } from '@/composables/usePermissions'
 import { formatFullDate } from '@/utils/format'
 import AppNav from '@/components/AppNav.vue'
 import StatCard from '@/components/StatCard.vue'
@@ -9,6 +10,7 @@ import ShipmentCard from '@/components/ShipmentCard.vue'
 
 const auth = useAuthStore()
 const dashboard = useDashboardStore()
+const { canCreateShipment } = usePermissions()
 
 onMounted(() => {
   dashboard.loadSummary()
@@ -30,7 +32,9 @@ onMounted(() => {
 
       <h1 class="dashboard__title">Welcome, {{ auth.user?.name }}</h1>
 
-      <router-link to="/shipments/new" class="dashboard__create">+ Create New Shipment</router-link>
+      <router-link v-if="canCreateShipment" to="/shipments/new" class="dashboard__create">
+        + Create New Shipment
+      </router-link>
 
       <p v-if="dashboard.loading" class="dashboard__message">Loading...</p>
 
