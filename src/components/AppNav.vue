@@ -1,7 +1,16 @@
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import { usePermissions } from '@/composables/usePermissions'
 
+const router = useRouter()
+const auth = useAuthStore()
 const { canCreateShipment } = usePermissions()
+
+function signOut() {
+  auth.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -101,6 +110,24 @@ const { canCreateShipment } = usePermissions()
       </svg>
       <span>Settings</span>
     </router-link>
+
+    <button type="button" class="app-nav__item app-nav__button" @click="signOut">
+      <svg
+        viewBox="0 0 24 24"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <path d="M16 17l5-5-5-5M21 12H9" />
+      </svg>
+      <span>Sign Out</span>
+    </button>
   </nav>
 </template>
 
@@ -133,6 +160,14 @@ const { canCreateShipment } = usePermissions()
 
 .app-nav__item.router-link-active {
   color: var(--color-primary);
+}
+
+.app-nav__button {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .app-nav__fab {
