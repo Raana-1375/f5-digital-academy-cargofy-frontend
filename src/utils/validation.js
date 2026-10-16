@@ -75,3 +75,39 @@ export function validateNewShipment({ origin, destination, note }) {
 
   return errors
 }
+
+export function validateProfile({ name, email }) {
+  const errors = {}
+
+  if (!name.trim()) {
+    errors.name = 'Full name is required'
+  }
+
+  if (!email.trim()) {
+    errors.email = 'Email is required'
+  } else if (!isValidEmail(email)) {
+    errors.email = 'Enter a valid email address'
+  }
+
+  return errors
+}
+
+export function validatePasswordChange({ currentPassword, newPassword, confirmPassword }) {
+  const errors = {}
+
+  if (!currentPassword) {
+    errors.currentPassword = 'Current password is required'
+  }
+
+  if (!newPassword) {
+    errors.newPassword = 'New password is required'
+  } else if (!isValidPassword(newPassword)) {
+    errors.newPassword = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
+  }
+
+  if (confirmPassword !== newPassword) {
+    errors.confirmPassword = 'Passwords do not match'
+  }
+
+  return errors
+}
