@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { isValidEmail, isValidPassword, validateSignIn, validateSignUp } from '../utils/validation'
+import {
+  isValidEmail,
+  isValidPassword,
+  validateSignIn,
+  validateSignUp,
+  validateProfile,
+  validatePasswordChange,
+} from '../utils/validation'
 
 describe('isValidEmail', () => {
   it('accepts a valid email', () => {
@@ -59,6 +66,59 @@ describe('validateSignUp', () => {
 
   it('rejects mismatched passwords', () => {
     const errors = validateSignUp({ ...validData, confirmPassword: 'different123' })
+    expect(errors.confirmPassword).toBe('Passwords do not match')
+  })
+})
+
+describe('validateProfile', () => {
+  it('returns no errors for valid data', () => {
+    expect(validateProfile({ name: 'Alex Morgan', email: 'alex@company.com' })).toEqual({})
+  })
+
+  it('requires a name and an email', () => {
+    const errors = validateProfile({ name: ' ', email: '' })
+    expect(errors.name).toBe('Full name is required')
+    expect(errors.email).toBe('Email is required')
+  })
+
+  it('rejects an invalid email', () => {
+    const errors = validateProfile({ name: 'Alex Morgan', email: 'alex@' })
+    expect(errors.email).toBe('Enter a valid email address')
+  })
+})
+
+describe('validatePasswordChange', () => {
+  const validData = {
+    currentPassword: 'oldpassword1',
+    newPassword: 'newpassword1',
+    confirmPassword: 'newpassword1',
+  }
+
+  it('returns no errors for valid data', () => {
+    expect(validatePasswordChange(validData)).toEqual({})
+  })
+
+  it('requires the current and the new password', () => {
+    const errors = validatePasswordChange({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    })
+    expect(errors.currentPassword).toBe('Current password is required')
+    expect(errors.newPassword).toBe('New password is required')
+  })
+
+  it('rejects a short new password', () => {
+    const errors = validatePasswordChange({
+      ...validData,
+      newPassword: 'short',
+      confirmPassword: 'short',
+    })
+    expect(errors.newPassword).toBe('Password must be at least 8 characters')
+  })
+
+  it('rejects mismatched passwords', () => {
+    const errors = validatePasswordChange({ ...validData, confirmPassword: 'different123' })
     expect(errors.confirmPassword).toBe('Passwords do not match')
   })
 })
