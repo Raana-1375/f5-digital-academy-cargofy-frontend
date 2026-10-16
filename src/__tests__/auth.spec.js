@@ -113,4 +113,20 @@ describe('auth store', () => {
     expect(auth.user).toBeNull()
     expect(localStorage.getItem('cargofy_token')).toBeNull()
   })
+
+  it('replaces the token and user after a profile update', async () => {
+    mockFetch(true, authResponse)
+    const auth = useAuthStore()
+    await auth.login({ email: 'alex@company.com', password: 'password123' })
+
+    auth.updateSession({
+      token: 'new-jwt-token',
+      user: { id: 7, email: 'alex@new.com', name: 'Alex M.', role: 'CLIENT', companyName: 'Acme' },
+    })
+
+    expect(auth.token).toBe('new-jwt-token')
+    expect(auth.user).toEqual({ email: 'alex@new.com', name: 'Alex M.', role: 'CLIENT' })
+    expect(localStorage.getItem('cargofy_token')).toBe('new-jwt-token')
+    expect(JSON.parse(localStorage.getItem('cargofy_user')).email).toBe('alex@new.com')
+  })
 })
