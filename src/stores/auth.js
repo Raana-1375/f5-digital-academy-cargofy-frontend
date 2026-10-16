@@ -31,6 +31,19 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem(USER_KEY, JSON.stringify(user.value))
   }
 
+  // Called after a profile update: the backend returns a new token
+  // because the email (the token subject) may have changed.
+  function updateSession({ token: newToken, user: updatedUser }) {
+    token.value = newToken
+    user.value = {
+      email: updatedUser.email,
+      name: updatedUser.name,
+      role: updatedUser.role,
+    }
+    localStorage.setItem(TOKEN_KEY, token.value)
+    localStorage.setItem(USER_KEY, JSON.stringify(user.value))
+  }
+
   async function login(credentials) {
     const data = await request('/auth/login', { method: 'POST', body: credentials })
     setSession(data)
@@ -53,5 +66,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem(USER_KEY)
   }
 
-  return { token, user, isAuthenticated, role, login, register, logout }
+  return { token, user, isAuthenticated, role, login, register, updateSession, logout }
 })
