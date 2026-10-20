@@ -68,6 +68,21 @@ describe('validateSignUp', () => {
     const errors = validateSignUp({ ...validData, confirmPassword: 'different123' })
     expect(errors.confirmPassword).toBe('Passwords do not match')
   })
+
+  it('requires the access code for operators', () => {
+    const errors = validateSignUp({ ...validData, role: 'OPERATOR', operatorAccessCode: ' ' })
+    expect(errors.operatorAccessCode).toBe('Operator access code is required')
+  })
+
+  it('accepts an operator who provides an access code', () => {
+    expect(
+      validateSignUp({ ...validData, role: 'OPERATOR', operatorAccessCode: 'some-code' }),
+    ).toEqual({})
+  })
+
+  it('does not ask clients for an access code', () => {
+    expect(validateSignUp({ ...validData, operatorAccessCode: '' })).toEqual({})
+  })
 })
 
 describe('validateProfile', () => {
