@@ -48,6 +48,10 @@ async function fillForm(wrapper, values) {
   await wrapper.find('#confirmPassword').setValue(values.confirmPassword)
 }
 
+async function selectOperator(wrapper) {
+  await wrapper.findAll('input[type="radio"]')[1].setValue()
+}
+
 const validValues = {
   fullName: 'Alex Morgan',
   email: 'alex@company.com',
@@ -84,7 +88,7 @@ describe('CreateAccountView', () => {
   it('switches the selected role card', async () => {
     const { wrapper } = await mountView()
 
-    await wrapper.findAll('input[type="radio"]')[1].setValue()
+    await selectOperator(wrapper)
 
     const cards = wrapper.findAll('.role-card')
     expect(cards[1].classes()).toContain('selected')
@@ -125,12 +129,74 @@ describe('CreateAccountView', () => {
     expect(wrapper.find('.server-error').text()).toBe('Email already in use')
   })
 
-  it('sends the registration data and redirects to the dashboard', async () => {
+  it('sends a client registration without an access code and redirects', async () => {
+    mockFetch(true, { ...authResponse, role: 'CLIENT' })
+    const { wrapper, router } = await mountView()
+
+    await fillForm(wrapper, { ...validValues, companyName: 'Acme Imports' })
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+
+    const [url, options] = fetch.mock.calls[0]
+    expect(url).toContain('/auth/register')
+    expect(JSON.parse(options.body)).toEqual({
+      name: 'Alex Morgan',
+      email: 'alex@company.com',
+      password: 'password123',
+      role: 'CLIENT',
+      companyName: 'Acme Imports',
+    })
+    expect(router.currentRoute.value.path).toBe('/dashboard')
+  })
+
+  // ---------- operator registration ----------
+
+  it('hides the access code field for clients', async () => {
+    const { wrapper } = await mountView()
+
+    expect(wrapper.find('#operatorAccessCode').exists()).toBe(false)
+  })
+
+  it('shows the access code field and locks the company to Cargofy for operators', async () => {
+    const { wrapper } = await mountView()
+
+    await selectOperator(wrapper)
+
+    expect(wrapper.find('#operatorAccessCode').exists()).toBe(true)
+    expect(wrapper.find('#companyName').element.value).toBe('Cargofy')
+    expect(wrapper.find('#companyName').element.readOnly).toBe(true)
+  })
+
+  it('unlocks and clears the company when switching back to client', async () => {
+    const { wrapper } = await mountView()
+
+    await selectOperator(wrapper)
+    await wrapper.findAll('input[type="radio"]')[0].setValue()
+
+    expect(wrapper.find('#operatorAccessCode').exists()).toBe(false)
+    expect(wrapper.find('#companyName').element.value).toBe('')
+    expect(wrapper.find('#companyName').element.readOnly).toBe(false)
+  })
+
+  it('requires the access code for operators and does not call the API without it', async () => {
+    mockFetch(true, authResponse)
+    const { wrapper } = await mountView()
+
+    await fillForm(wrapper, validValues)
+    await selectOperator(wrapper)
+    await wrapper.find('form').trigger('submit')
+
+    expect(wrapper.text()).toContain('Operator access code is required')
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
+  it('sends the operator registration with the access code and redirects', async () => {
     mockFetch(true, authResponse)
     const { wrapper, router } = await mountView()
 
     await fillForm(wrapper, validValues)
-    await wrapper.findAll('input[type="radio"]')[1].setValue()
+    await selectOperator(wrapper)
+    await wrapper.find('#operatorAccessCode').setValue('  secret-code ')
     await wrapper.find('form').trigger('submit')
     await flushPromises()
 
@@ -141,8 +207,22 @@ describe('CreateAccountView', () => {
       email: 'alex@company.com',
       password: 'password123',
       role: 'OPERATOR',
-      companyName: null,
+      companyName: 'Cargofy',
+      operatorAccessCode: 'secret-code',
     })
     expect(router.currentRoute.value.path).toBe('/dashboard')
+  })
+
+  it('shows the server error when the access code is wrong', async () => {
+    mockFetch(false, { message: 'Invalid operator access code' })
+    const { wrapper } = await mountView()
+
+    await fillForm(wrapper, validValues)
+    await selectOperator(wrapper)
+    await wrapper.find('#operatorAccessCode').setValue('wrong-code')
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(wrapper.find('.server-error').text()).toBe('Invalid operator access code')
   })
 })
