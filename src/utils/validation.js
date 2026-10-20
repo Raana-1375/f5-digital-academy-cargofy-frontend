@@ -26,7 +26,14 @@ export function validateSignIn({ email, password }) {
   return errors
 }
 
-export function validateSignUp({ fullName, email, password, confirmPassword, role }) {
+export function validateSignUp({
+  fullName,
+  email,
+  password,
+  confirmPassword,
+  role,
+  operatorAccessCode,
+}) {
   const errors = {}
 
   if (!fullName.trim()) {
@@ -41,6 +48,10 @@ export function validateSignUp({ fullName, email, password, confirmPassword, rol
 
   if (!role) {
     errors.role = 'Select your role'
+  }
+
+  if (role === 'OPERATOR' && !operatorAccessCode?.trim()) {
+    errors.operatorAccessCode = 'Operator access code is required'
   }
 
   if (!password) {

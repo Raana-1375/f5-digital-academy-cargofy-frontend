@@ -1,11 +1,13 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import '../assets/auth.css'
 import logo from '../assets/logo.png'
 import { useAuthStore } from '../stores/auth'
 import { validateSignUp } from '../utils/validation'
+
+const OPERATOR_COMPANY = 'Cargofy'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -20,6 +22,7 @@ const form = reactive({
   email: '',
   companyName: '',
   role: 'CLIENT',
+  operatorAccessCode: '',
   password: '',
   confirmPassword: '',
 })
@@ -29,20 +32,40 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const loading = ref(false)
 
+const isOperator = computed(() => form.role === 'OPERATOR')
+
+// Operators always belong to Cargofy; clients type their own company.
+watch(
+  () => form.role,
+  (role, previousRole) => {
+    if (role === 'OPERATOR') {
+      form.companyName = OPERATOR_COMPANY
+    } else if (previousRole === 'OPERATOR') {
+      form.companyName = ''
+      form.operatorAccessCode = ''
+    }
+  },
+)
+
 async function handleSubmit() {
   serverError.value = ''
   errors.value = validateSignUp(form)
   if (Object.keys(errors.value).length > 0) return
 
+  const details = {
+    name: form.fullName.trim(),
+    email: form.email.trim(),
+    password: form.password,
+    role: form.role,
+    companyName: form.companyName.trim() || null,
+  }
+  if (isOperator.value) {
+    details.operatorAccessCode = form.operatorAccessCode.trim()
+  }
+
   loading.value = true
   try {
-    await auth.register({
-      name: form.fullName.trim(),
-      email: form.email.trim(),
-      password: form.password,
-      role: form.role,
-      companyName: form.companyName.trim() || null,
-    })
+    await auth.register(details)
     router.push('/dashboard')
   } catch (error) {
     serverError.value = error.message
@@ -88,14 +111,19 @@ async function handleSubmit() {
         </div>
 
         <div class="field">
-          <label for="companyName"> Company Name <span class="optional">(optional)</span> </label>
+          <label for="companyName">
+            Company Name <span v-if="!isOperator" class="optional">(optional)</span>
+          </label>
           <input
             id="companyName"
             v-model="form.companyName"
             type="text"
             placeholder="e.g. Acme Logistics Corp"
             autocomplete="organization"
+            :readonly="isOperator"
+            :class="{ locked: isOperator }"
           />
+          <p v-if="isOperator" class="field-hint">Operators always belong to Cargofy.</p>
         </div>
 
         <fieldset class="field role-field">
@@ -114,6 +142,22 @@ async function handleSubmit() {
           </div>
           <p v-if="errors.role" class="field-error">{{ errors.role }}</p>
         </fieldset>
+
+        <div v-if="isOperator" class="field">
+          <label for="operatorAccessCode">Operator access code</label>
+          <input
+            id="operatorAccessCode"
+            v-model="form.operatorAccessCode"
+            type="password"
+            placeholder="Code provided by Cargofy"
+            autocomplete="off"
+            :class="{ invalid: errors.operatorAccessCode }"
+          />
+          <p v-if="errors.operatorAccessCode" class="field-error">
+            {{ errors.operatorAccessCode }}
+          </p>
+          <p v-else class="field-hint">Operator accounts require the code provided by Cargofy.</p>
+        </div>
 
         <div class="field">
           <label for="password">Password</label>
@@ -212,6 +256,17 @@ async function handleSubmit() {
   float: right;
   font-weight: 400;
   font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.locked {
+  background-color: var(--color-soft);
+  cursor: not-allowed;
+}
+
+.field-hint {
+  margin-top: 4px;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
