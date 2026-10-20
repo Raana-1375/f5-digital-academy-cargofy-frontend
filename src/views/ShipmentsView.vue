@@ -130,6 +130,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .shipments-page {
   min-height: 100vh;
+  min-width: 0;
   background: var(--color-bg);
 }
 
@@ -192,10 +193,9 @@ onBeforeUnmount(() => {
 
 .shipments__tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  padding-bottom: 4px;
   margin-bottom: 16px;
-  overflow-x: auto;
 }
 
 .shipments__tab {
@@ -218,6 +218,7 @@ onBeforeUnmount(() => {
 
 .shipments__list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 

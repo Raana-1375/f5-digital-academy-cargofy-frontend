@@ -242,18 +242,18 @@ onMounted(load)
 
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
-  overflow-x: auto;
 }
 
 .tabs__tab {
-  padding: 8px 16px;
+  padding: 8px 12px;
   border: none;
   border-radius: 999px;
   background: var(--color-soft);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text-muted);
   white-space: nowrap;
