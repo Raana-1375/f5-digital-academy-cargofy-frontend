@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { usePermissions } from '@/composables/usePermissions'
+import logo from '@/assets/logo.png'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -15,6 +16,10 @@ function signOut() {
 
 <template>
   <nav class="app-nav" aria-label="Main navigation">
+    <router-link to="/dashboard" class="app-nav__brand" aria-label="Cargofy home">
+      <img :src="logo" alt="Cargofy" />
+    </router-link>
+
     <router-link to="/dashboard" class="app-nav__item">
       <svg
         viewBox="0 0 24 24"
@@ -146,6 +151,25 @@ function signOut() {
   box-shadow: 0 -1px 4px rgba(15, 23, 42, 0.08);
 }
 
+.app-nav__brand {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 16px;
+  background: var(--color-card);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.app-nav__brand img {
+  width: auto;
+  height: 28px;
+}
+
 .app-nav__item {
   display: flex;
   flex-direction: column;
@@ -192,6 +216,10 @@ function signOut() {
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
   }
 
+  .app-nav__brand {
+    display: none;
+  }
+
   .app-nav__item {
     flex-direction: row;
     gap: 8px;
@@ -202,6 +230,27 @@ function signOut() {
     width: 40px;
     height: 40px;
     margin-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-nav {
+    justify-content: flex-end;
+    padding: 10px max(32px, calc((100% - 928px) / 2));
+  }
+
+  .app-nav__brand img {
+    height: 34px;
+  }
+
+  .app-nav__brand {
+    position: static;
+    display: flex;
+    height: auto;
+    padding: 0;
+    margin-right: auto;
+    background: none;
+    box-shadow: none;
   }
 }
 </style>

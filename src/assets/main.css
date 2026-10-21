@@ -86,3 +86,9 @@ img {
   flex: 1 0 auto;
   min-height: 0;
 }
+
+@media (max-width: 767px) {
+  #app:has(.app-nav__brand) {
+    padding-top: 52px;
+  }
+}

@@ -38,6 +38,14 @@ describe('AppNav', () => {
     localStorage.clear()
   })
 
+  it('shows the brand logo linking to the dashboard', async () => {
+    const { wrapper } = await mountNav('CLIENT')
+    const brand = wrapper.find('.app-nav__brand')
+
+    expect(brand.attributes('href')).toBe('/dashboard')
+    expect(brand.find('img').attributes('alt')).toBe('Cargofy')
+  })
+
   it('hides the create shipment button from clients', async () => {
     const { wrapper } = await mountNav('CLIENT')
 
