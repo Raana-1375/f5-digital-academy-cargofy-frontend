@@ -6,6 +6,7 @@ import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
 import { formatPackage, formatPrice, formatWeight, getTransportInfo } from '@/utils/cargo'
 import AppNav from '@/components/AppNav.vue'
+import PageBanner from '@/components/PageBanner.vue'
 import { usePermissions } from '@/composables/usePermissions'
 import UpdateStatusModal from '@/components/UpdateStatusModal.vue'
 import StatusTimeline from '@/components/StatusTimeline.vue'
@@ -58,6 +59,8 @@ watch(
 
     <main class="detail">
       <router-link to="/shipments" class="detail__back">← Back to Shipments</router-link>
+
+      <PageBanner title="Shipment Details" subtitle="Route, cargo and status history." />
 
       <p v-if="store.loading" class="detail__message">Loading...</p>
 
