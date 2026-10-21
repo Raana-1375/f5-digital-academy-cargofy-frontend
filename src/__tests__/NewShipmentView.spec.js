@@ -59,6 +59,10 @@ async function mountForm() {
 async function fillRequiredFields(wrapper) {
   await wrapper.find('#origin').setValue('Vigo, ES')
   await wrapper.find('#destination').setValue('Oslo, NO')
+  await wrapper.find('#transportMode').setValue('SEA')
+  await wrapper.find('#packageType').setValue('BOX')
+  await wrapper.find('#quantity').setValue('10')
+  await wrapper.find('#weightKg').setValue('250.5')
 }
 
 describe('NewShipmentView', () => {
@@ -75,6 +79,18 @@ describe('NewShipmentView', () => {
     expect(wrapper.find('#operator').text()).toContain('Marta')
   })
 
+  it('offers the transport modes and package types', async () => {
+    mockApi()
+    const { wrapper } = await mountForm()
+
+    expect(wrapper.find('#transportMode').text()).toContain('Air')
+    expect(wrapper.find('#transportMode').text()).toContain('Sea')
+    expect(wrapper.find('#transportMode').text()).toContain('Road')
+    expect(wrapper.find('#packageType').text()).toContain('Pallet')
+    expect(wrapper.find('#packageType').text()).toContain('Box')
+    expect(wrapper.find('#packageType').text()).toContain('Envelope')
+  })
+
   it('shows required errors and does not send the request when the form is empty', async () => {
     const fetchMock = mockApi()
     const { wrapper } = await mountForm()
@@ -84,6 +100,10 @@ describe('NewShipmentView', () => {
 
     expect(wrapper.text()).toContain('Origin is required')
     expect(wrapper.text()).toContain('Destination is required')
+    expect(wrapper.text()).toContain('Transport mode is required')
+    expect(wrapper.text()).toContain('Package type is required')
+    expect(wrapper.text()).toContain('Quantity is required')
+    expect(wrapper.text()).toContain('Weight is required')
     expect(postCalls(fetchMock)).toHaveLength(0)
   })
 
@@ -100,6 +120,19 @@ describe('NewShipmentView', () => {
     expect(postCalls(fetchMock)).toHaveLength(0)
   })
 
+  it('rejects an invalid HS code without sending the request', async () => {
+    const fetchMock = mockApi()
+    const { wrapper } = await mountForm()
+    await fillRequiredFields(wrapper)
+
+    await wrapper.find('#hsCode').setValue('123')
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('HS code must contain 6 to 10 digits')
+    expect(postCalls(fetchMock)).toHaveLength(0)
+  })
+
   it('creates the shipment and redirects to its detail page', async () => {
     const fetchMock = mockApi()
     const { wrapper, router } = await mountForm()
@@ -107,6 +140,9 @@ describe('NewShipmentView', () => {
     await wrapper.find('#client').setValue('1')
     await wrapper.find('#operator').setValue('2')
     await wrapper.find('#delivery').setValue('2026-11-05')
+    await wrapper.find('#goodsDescription').setValue('Bottled olive oil')
+    await wrapper.find('#hsCode').setValue('220600')
+    await wrapper.find('#dangerousGoods').setValue(true)
     await wrapper.find('#note').setValue('Handle with care')
 
     await wrapper.find('form').trigger('submit')
@@ -120,9 +156,32 @@ describe('NewShipmentView', () => {
       clientId: 1,
       assignedOperatorId: 2,
       estimatedDelivery: '2026-11-05T00:00:00',
+      transportMode: 'SEA',
+      packageType: 'BOX',
+      quantity: 10,
+      weightKg: 250.5,
+      goodsDescription: 'Bottled olive oil',
+      dangerousGoods: true,
+      hsCode: '220600',
       note: 'Handle with care',
     })
     expect(router.currentRoute.value.fullPath).toBe('/shipments/42')
+  })
+
+  it('sends null for empty optional fields and false for dangerous goods', async () => {
+    const fetchMock = mockApi()
+    const { wrapper } = await mountForm()
+    await fillRequiredFields(wrapper)
+
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+
+    const body = JSON.parse(postCalls(fetchMock)[0][1].body)
+    expect(body.goodsDescription).toBeNull()
+    expect(body.hsCode).toBeNull()
+    expect(body.note).toBeNull()
+    expect(body.estimatedDelivery).toBeNull()
+    expect(body.dangerousGoods).toBe(false)
   })
 
   it('shows the server error message when creating fails', async () => {
@@ -143,5 +202,15 @@ describe('NewShipmentView', () => {
     const { wrapper } = await mountForm()
 
     expect(wrapper.find('.btn--secondary').attributes('href')).toBe('/shipments')
+  })
+  it('shows a warning only when dangerous goods is checked', async () => {
+    mockApi()
+    const { wrapper } = await mountForm()
+
+    expect(wrapper.find('.new__warning').exists()).toBe(false)
+
+    await wrapper.find('#dangerousGoods').setValue(true)
+
+    expect(wrapper.find('.new__warning').text()).toContain('Dangerous goods require')
   })
 })

@@ -3,7 +3,11 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { createShipment } from '@/services/shipmentService'
 import { fetchUsersByRole } from '@/services/userService'
-import { NOTE_MAX_LENGTH, validateNewShipment } from '@/utils/validation'
+import {
+  GOODS_DESCRIPTION_MAX_LENGTH,
+  NOTE_MAX_LENGTH,
+  validateNewShipment,
+} from '@/utils/validation'
 import AppNav from '@/components/AppNav.vue'
 
 const router = useRouter()
@@ -14,6 +18,13 @@ const form = reactive({
   clientId: '',
   operatorId: '',
   estimatedDelivery: '',
+  transportMode: '',
+  packageType: '',
+  quantity: '',
+  weightKg: '',
+  goodsDescription: '',
+  dangerousGoods: false,
+  hsCode: '',
   note: '',
 })
 const errors = ref({})
@@ -53,6 +64,13 @@ async function submit() {
       clientId: form.clientId ? Number(form.clientId) : null,
       assignedOperatorId: form.operatorId ? Number(form.operatorId) : null,
       estimatedDelivery: form.estimatedDelivery ? `${form.estimatedDelivery}T00:00:00` : null,
+      transportMode: form.transportMode,
+      packageType: form.packageType,
+      quantity: Number(form.quantity),
+      weightKg: Number(form.weightKg),
+      goodsDescription: form.goodsDescription.trim() || null,
+      dangerousGoods: form.dangerousGoods,
+      hsCode: form.hsCode.trim() || null,
       note: form.note.trim() || null,
     })
     router.push(`/shipments/${created.id}`)
@@ -73,7 +91,7 @@ onMounted(loadOptions)
     <main class="new">
       <header class="new__header">
         <h1>Book Shipment</h1>
-        <p>Enter the route, client assignment and dispatch schedule.</p>
+        <p>Enter the route, cargo details, client assignment and dispatch schedule.</p>
       </header>
 
       <form class="new__form" novalidate @submit.prevent="submit">
@@ -102,6 +120,117 @@ onMounted(loadOptions)
           />
           <p v-if="errors.destination" class="field__error">{{ errors.destination }}</p>
         </div>
+
+        <h2 class="new__section">Cargo details</h2>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="transportMode">Transport Mode <span class="required">Required</span></label>
+            <select
+              id="transportMode"
+              v-model="form.transportMode"
+              :aria-invalid="!!errors.transportMode"
+            >
+              <option value="">Select mode</option>
+              <option value="AIR">✈️ Air</option>
+              <option value="SEA">🚢 Sea</option>
+              <option value="ROAD">🚚 Road</option>
+            </select>
+            <p v-if="errors.transportMode" class="field__error">{{ errors.transportMode }}</p>
+          </div>
+
+          <div class="field">
+            <label for="packageType">Package Type <span class="required">Required</span></label>
+            <select
+              id="packageType"
+              v-model="form.packageType"
+              :aria-invalid="!!errors.packageType"
+            >
+              <option value="">Select package</option>
+              <option value="PALLET">📦 Pallet</option>
+              <option value="BOX">🧰 Box</option>
+              <option value="ENVELOPE">✉️ Envelope</option>
+            </select>
+            <p v-if="errors.packageType" class="field__error">{{ errors.packageType }}</p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="quantity">Quantity <span class="required">Required</span></label>
+            <input
+              id="quantity"
+              v-model.number="form.quantity"
+              type="number"
+              min="1"
+              step="1"
+              placeholder="e.g. 10"
+              :aria-invalid="!!errors.quantity"
+            />
+            <p v-if="errors.quantity" class="field__error">{{ errors.quantity }}</p>
+          </div>
+
+          <div class="field">
+            <label for="weightKg">Total Weight (kg) <span class="required">Required</span></label>
+            <input
+              id="weightKg"
+              v-model.number="form.weightKg"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="e.g. 250.5"
+              :aria-invalid="!!errors.weightKg"
+            />
+            <p v-if="errors.weightKg" class="field__error">{{ errors.weightKg }}</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="goodsDescription">
+            Goods Description <span class="optional">(Optional)</span>
+            <span
+              class="counter"
+              :class="{
+                'counter--over': form.goodsDescription.length > GOODS_DESCRIPTION_MAX_LENGTH,
+              }"
+            >
+              {{ form.goodsDescription.length }}/{{ GOODS_DESCRIPTION_MAX_LENGTH }}
+            </span>
+          </label>
+          <input
+            id="goodsDescription"
+            v-model="form.goodsDescription"
+            type="text"
+            placeholder="e.g. Bottled olive oil, 12 units per box"
+            :aria-invalid="!!errors.goodsDescription"
+          />
+          <p v-if="errors.goodsDescription" class="field__error">{{ errors.goodsDescription }}</p>
+        </div>
+
+        <div class="field">
+          <label for="hsCode">HS Code <span class="optional">(Optional)</span></label>
+          <input
+            id="hsCode"
+            v-model="form.hsCode"
+            type="text"
+            inputmode="numeric"
+            placeholder="6 to 10 digits, e.g. 220600"
+            :aria-invalid="!!errors.hsCode"
+          />
+          <p v-if="errors.hsCode" class="field__error">{{ errors.hsCode }}</p>
+        </div>
+
+        <label class="check" for="dangerousGoods">
+          <input id="dangerousGoods" v-model="form.dangerousGoods" type="checkbox" />
+          <span>⚠️ Dangerous goods (hazardous materials)</span>
+        </label>
+
+        <p v-if="form.dangerousGoods" class="new__warning" role="alert">
+          ⚠️ Dangerous goods require special documentation and handling. The operator will review
+          this shipment before dispatch.
+        </p>
+
+        <h2 class="new__section">Assignment &amp; schedule</h2>
 
         <div class="field">
           <label for="client">Client <span class="optional">(Optional)</span></label>
@@ -136,7 +265,7 @@ onMounted(loadOptions)
 
         <div class="field">
           <label for="note">
-            Cargo Description &amp; Notes <span class="optional">(Optional)</span>
+            Notes <span class="optional">(Optional)</span>
             <span class="counter" :class="{ 'counter--over': form.note.length > NOTE_MAX_LENGTH }">
               {{ form.note.length }}/{{ NOTE_MAX_LENGTH }}
             </span>
@@ -196,9 +325,22 @@ onMounted(loadOptions)
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 
+.new__section {
+  padding-top: 8px;
+  border-top: 1px solid var(--color-soft);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
 .field {
   display: grid;
   gap: 6px;
+}
+
+.field-row {
+  display: grid;
+  gap: 16px;
 }
 
 .field label {
@@ -259,6 +401,31 @@ onMounted(loadOptions)
   resize: vertical;
 }
 
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-soft);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.new__warning {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: #fef2f2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
+.check input {
+  width: 18px;
+  height: 18px;
+}
+
 .field__error,
 .new__error {
   font-size: 0.85rem;
@@ -305,6 +472,10 @@ onMounted(loadOptions)
 
   .new__form {
     padding: 24px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>

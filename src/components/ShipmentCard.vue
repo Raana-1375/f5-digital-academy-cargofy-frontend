@@ -2,12 +2,14 @@
 import { computed, ref } from 'vue'
 import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
+import { formatPackage, getTransportInfo } from '@/utils/cargo'
 
 const props = defineProps({
   shipment: { type: Object, required: true },
 })
 
 const statusInfo = computed(() => getStatusInfo(props.shipment.status))
+const transport = computed(() => getTransportInfo(props.shipment.transportMode))
 const copied = ref(false)
 
 async function copyTrackingNumber() {
@@ -83,6 +85,13 @@ async function copyTrackingNumber() {
       </div>
 
       <p class="shipment-card__route">{{ shipment.origin }} → {{ shipment.destination }}</p>
+      <p v-if="transport.icon" class="shipment-card__cargo">
+        {{ transport.icon }} {{ transport.label }}
+        <template v-if="shipment.packageType">
+          · {{ formatPackage(shipment.packageType, shipment.quantity) }}
+        </template>
+        <span v-if="shipment.dangerousGoods" class="shipment-card__danger">⚠️</span>
+      </p>
 
       <div class="shipment-card__footer">
         <span class="shipment-card__date">{{ formatDate(shipment.createdDate) }}</span>
@@ -204,6 +213,12 @@ async function copyTrackingNumber() {
   color: var(--color-text-muted);
 }
 
+.shipment-card__cargo {
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
 .shipment-card__footer {
   display: flex;
   align-items: center;

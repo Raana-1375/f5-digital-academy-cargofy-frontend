@@ -2,12 +2,14 @@
 import { computed } from 'vue'
 import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
+import { formatPackage, formatWeight, getTransportInfo } from '@/utils/cargo'
 
 const props = defineProps({
   shipment: { type: Object, required: true },
 })
 
 const statusInfo = computed(() => getStatusInfo(props.shipment.status))
+const transport = computed(() => getTransportInfo(props.shipment.transportMode))
 </script>
 
 <template>
@@ -59,6 +61,21 @@ const statusInfo = computed(() => getStatusInfo(props.shipment.status))
         <span class="list-item__label">Destination</span>
         <p class="list-item__place">{{ shipment.destination }}</p>
       </div>
+    </div>
+
+    <div class="list-item__cargo">
+      <span v-if="transport.icon" class="list-item__chip">
+        {{ transport.icon }} {{ transport.label }}
+      </span>
+      <span v-if="shipment.packageType" class="list-item__chip">
+        {{ formatPackage(shipment.packageType, shipment.quantity) }}
+      </span>
+      <span v-if="shipment.weightKg" class="list-item__chip">
+        {{ formatWeight(shipment.weightKg) }}
+      </span>
+      <span v-if="shipment.dangerousGoods" class="list-item__chip list-item__chip--danger">
+        ⚠️ Dangerous
+      </span>
     </div>
 
     <div class="list-item__meta">
@@ -203,6 +220,30 @@ const statusInfo = computed(() => getStatusInfo(props.shipment.status))
 .list-item__place {
   font-weight: 600;
   color: var(--color-text);
+}
+.list-item__cargo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.list-item__cargo:empty {
+  display: none;
+}
+
+.list-item__chip {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.list-item__chip--danger {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .list-item__meta {

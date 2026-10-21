@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useShipmentDetailStore } from '@/stores/shipmentDetail'
 import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
+import { formatPackage, formatPrice, formatWeight, getTransportInfo } from '@/utils/cargo'
 import AppNav from '@/components/AppNav.vue'
 import { usePermissions } from '@/composables/usePermissions'
 import UpdateStatusModal from '@/components/UpdateStatusModal.vue'
@@ -16,6 +17,7 @@ const { canUpdateStatus } = usePermissions()
 const showStatusModal = ref(false)
 
 const statusInfo = computed(() => getStatusInfo(store.status))
+const transport = computed(() => getTransportInfo(store.shipment?.transportMode))
 
 async function copyTrackingNumber() {
   try {
@@ -122,6 +124,45 @@ watch(
                 <p class="route__place">{{ store.shipment.destination }}</p>
               </div>
             </div>
+          </section>
+
+          <section class="card">
+            <h2>Cargo Details</h2>
+            <dl class="info">
+              <div class="info__row">
+                <dt>Transport Mode</dt>
+                <dd>{{ transport.icon }} {{ transport.label }}</dd>
+              </div>
+              <div class="info__row">
+                <dt>Packages</dt>
+                <dd>
+                  {{ formatPackage(store.shipment.packageType, store.shipment.quantity) }}
+                </dd>
+              </div>
+              <div class="info__row">
+                <dt>Total Weight</dt>
+                <dd>{{ formatWeight(store.shipment.weightKg) }}</dd>
+              </div>
+              <div class="info__row">
+                <dt>Goods</dt>
+                <dd>{{ store.shipment.goodsDescription || '—' }}</dd>
+              </div>
+              <div class="info__row">
+                <dt>HS Code</dt>
+                <dd>{{ store.shipment.hsCode || '—' }}</dd>
+              </div>
+              <div
+                class="info__row"
+                :class="{ 'info__row--danger': store.shipment.dangerousGoods }"
+              >
+                <dt>Dangerous Goods</dt>
+                <dd>{{ store.shipment.dangerousGoods ? '⚠️ Yes' : 'No' }}</dd>
+              </div>
+              <div class="info__row info__row--price">
+                <dt>Estimated Price (indicative)</dt>
+                <dd>{{ formatPrice(store.shipment.estimatedPrice) }}</dd>
+              </div>
+            </dl>
           </section>
 
           <section class="card">
@@ -340,6 +381,21 @@ watch(
   font-weight: 500;
   color: var(--color-text);
   text-align: right;
+}
+
+.info__row--danger {
+  background: #fef2f2;
+}
+
+.info__row--danger dd {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.info__row--price dd {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
 .detail__message {

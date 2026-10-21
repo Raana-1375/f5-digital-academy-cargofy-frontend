@@ -68,8 +68,21 @@ export function validateSignUp({
 }
 
 export const NOTE_MAX_LENGTH = 300
+export const GOODS_DESCRIPTION_MAX_LENGTH = 200
 
-export function validateNewShipment({ origin, destination, note }) {
+const HS_CODE_PATTERN = /^\d{6,10}$/
+
+export function validateNewShipment({
+  origin,
+  destination,
+  note,
+  transportMode,
+  packageType,
+  quantity,
+  weightKg,
+  goodsDescription,
+  hsCode,
+}) {
   const errors = {}
 
   if (!origin || !origin.trim()) {
@@ -78,6 +91,34 @@ export function validateNewShipment({ origin, destination, note }) {
 
   if (!destination || !destination.trim()) {
     errors.destination = 'Destination is required'
+  }
+
+  if (!transportMode) {
+    errors.transportMode = 'Transport mode is required'
+  }
+
+  if (!packageType) {
+    errors.packageType = 'Package type is required'
+  }
+
+  if (quantity === '' || quantity === null || quantity === undefined) {
+    errors.quantity = 'Quantity is required'
+  } else if (!Number.isInteger(Number(quantity)) || Number(quantity) < 1) {
+    errors.quantity = 'Quantity must be at least 1'
+  }
+
+  if (weightKg === '' || weightKg === null || weightKg === undefined) {
+    errors.weightKg = 'Weight is required'
+  } else if (!(Number(weightKg) > 0)) {
+    errors.weightKg = 'Weight must be greater than 0'
+  }
+
+  if (goodsDescription && goodsDescription.length > GOODS_DESCRIPTION_MAX_LENGTH) {
+    errors.goodsDescription = `Goods description must be at most ${GOODS_DESCRIPTION_MAX_LENGTH} characters`
+  }
+
+  if (hsCode && !HS_CODE_PATTERN.test(hsCode.trim())) {
+    errors.hsCode = 'HS code must contain 6 to 10 digits'
   }
 
   if (note && note.length > NOTE_MAX_LENGTH) {
