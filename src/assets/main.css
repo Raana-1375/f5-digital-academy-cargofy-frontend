@@ -74,3 +74,15 @@ img {
   max-width: 100%;
   display: block;
 }
+
+/* Keep the footer at the bottom of short pages */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#app > div[class$='-page'] {
+  flex: 1 0 auto;
+  min-height: 0;
+}
