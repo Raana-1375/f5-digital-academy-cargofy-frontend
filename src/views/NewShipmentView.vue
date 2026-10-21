@@ -225,6 +225,11 @@ onMounted(loadOptions)
           <span>⚠️ Dangerous goods (hazardous materials)</span>
         </label>
 
+        <p v-if="form.dangerousGoods" class="new__warning" role="alert">
+          ⚠️ Dangerous goods require special documentation and handling. The operator will review
+          this shipment before dispatch.
+        </p>
+
         <h2 class="new__section">Assignment &amp; schedule</h2>
 
         <div class="field">
@@ -408,6 +413,14 @@ onMounted(loadOptions)
   cursor: pointer;
 }
 
+.new__warning {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: #fef2f2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
 .check input {
   width: 18px;
   height: 18px;
