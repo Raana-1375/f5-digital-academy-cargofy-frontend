@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useShipmentsStore } from '@/stores/shipments'
 import AppNav from '@/components/AppNav.vue'
+import PageBanner from '@/components/PageBanner.vue'
 import ShipmentListItem from '@/components/ShipmentListItem.vue'
 import { usePermissions } from '@/composables/usePermissions'
 
@@ -37,15 +38,11 @@ onBeforeUnmount(() => {
     <AppNav />
 
     <main class="shipments">
-      <div class="shipments__header">
-        <div>
-          <h1>Shipments</h1>
-          <p>Global multi-modal active freight</p>
-        </div>
+      <PageBanner title="Shipments" subtitle="Global multi-modal active freight">
         <router-link v-if="canCreateShipment" to="/shipments/new" class="shipments__create">
           + New Shipment
         </router-link>
-      </div>
+      </PageBanner>
 
       <label class="shipments__search">
         <svg
@@ -140,29 +137,13 @@ onBeforeUnmount(() => {
   padding: 24px 16px 96px;
 }
 
-.shipments__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.shipments__header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.shipments__header p {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
 .shipments__create {
+  display: inline-block;
   padding: 10px 16px;
+  margin-top: 14px;
   border-radius: var(--radius-md);
   background: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   color: #fff;
   font-weight: 600;
   white-space: nowrap;
