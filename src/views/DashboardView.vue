@@ -49,7 +49,13 @@ onMounted(() => {
 
       <template v-else-if="dashboard.summary">
         <section class="dashboard__stats">
-          <StatCard variant="total" label="Total Shipments" :value="dashboard.summary.total" />
+          <StatCard
+            class="dashboard__total"
+            variant="total"
+            label="Total Shipments"
+            :value="dashboard.summary.total"
+          />
+          <StatCard variant="preparing" label="Preparing" :value="dashboard.summary.preparing" />
           <StatCard variant="transit" label="In Transit" :value="dashboard.summary.inTransit" />
           <StatCard
             variant="customs"
@@ -154,6 +160,9 @@ onMounted(() => {
   margin-bottom: 24px;
 }
 
+.dashboard__total {
+  grid-column: 1 / -1;
+}
 .dashboard__recent-header {
   display: flex;
   align-items: center;
@@ -210,7 +219,11 @@ onMounted(() => {
   }
 
   .dashboard__stats {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .dashboard__total {
+    grid-column: auto;
   }
 }
 </style>
