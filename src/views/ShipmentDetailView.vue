@@ -9,6 +9,7 @@ import AppNav from '@/components/AppNav.vue'
 import { usePermissions } from '@/composables/usePermissions'
 import UpdateStatusModal from '@/components/UpdateStatusModal.vue'
 import StatusTimeline from '@/components/StatusTimeline.vue'
+import ProgressStepper from '@/components/ProgressStepper.vue'
 
 const route = useRoute()
 const store = useShipmentDetailStore()
@@ -107,6 +108,9 @@ watch(
             >
               Update Status
             </button>
+          </section>
+          <section class="card">
+            <ProgressStepper :status="store.status" />
           </section>
 
           <section class="card route">
