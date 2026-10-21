@@ -9,6 +9,7 @@ import {
   validateNewShipment,
 } from '@/utils/validation'
 import AppNav from '@/components/AppNav.vue'
+import PageBanner from '@/components/PageBanner.vue'
 
 const router = useRouter()
 
@@ -89,10 +90,10 @@ onMounted(loadOptions)
     <AppNav />
 
     <main class="new">
-      <header class="new__header">
-        <h1>Book Shipment</h1>
-        <p>Enter the route, cargo details, client assignment and dispatch schedule.</p>
-      </header>
+      <PageBanner
+        title="Book Shipment"
+        subtitle="Enter the route, cargo details, client assignment and dispatch schedule."
+      />
 
       <form class="new__form" novalidate @submit.prevent="submit">
         <div class="field">
@@ -305,17 +306,6 @@ onMounted(loadOptions)
   padding: 24px 16px 96px;
 }
 
-.new__header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.new__header p {
-  margin-bottom: 16px;
-  color: var(--color-text-muted);
-}
-
 .new__form {
   display: grid;
   gap: 16px;
@@ -421,6 +411,7 @@ onMounted(loadOptions)
   font-weight: 600;
   color: #b91c1c;
 }
+
 .check input {
   width: 18px;
   height: 18px;
