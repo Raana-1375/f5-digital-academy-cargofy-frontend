@@ -78,6 +78,16 @@ describe('DashboardView', () => {
     expect(wrapper.text()).toContain('Welcome, Rana Test')
   })
 
+  it('shows the hero banner with the tagline and system status', async () => {
+    mockSummary(baseSummary)
+    const wrapper = await mountDashboard()
+    const hero = wrapper.find('.hero')
+
+    expect(hero.exists()).toBe(true)
+    expect(hero.text()).toContain('tracked end to end')
+    expect(hero.text()).toContain('Systems Nominal')
+  })
+
   it('shows the summary counts in the stat cards', async () => {
     mockSummary(baseSummary)
     const wrapper = await mountDashboard()
