@@ -203,4 +203,14 @@ describe('NewShipmentView', () => {
 
     expect(wrapper.find('.btn--secondary').attributes('href')).toBe('/shipments')
   })
+  it('shows a warning only when dangerous goods is checked', async () => {
+    mockApi()
+    const { wrapper } = await mountForm()
+
+    expect(wrapper.find('.new__warning').exists()).toBe(false)
+
+    await wrapper.find('#dangerousGoods').setValue(true)
+
+    expect(wrapper.find('.new__warning').text()).toContain('Dangerous goods require')
+  })
 })
