@@ -2,7 +2,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import '../assets/auth.css'
+import AuthLayout from '../components/AuthLayout.vue'
 import logo from '../assets/logo.png'
 import { useAuthStore } from '../stores/auth'
 import { validateSignUp } from '../utils/validation'
@@ -76,7 +76,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <main class="auth-page">
+  <AuthLayout>
     <section class="auth-card">
       <img :src="logo" alt="Cargofy" class="auth-logo" />
 
@@ -248,7 +248,7 @@ async function handleSubmit() {
       <p>Calle Comercio 42, Gijón, Spain</p>
       <p>Support: Mon–Fri, 9:00–18:00 · support@cargofy.dev</p>
     </footer>
-  </main>
+  </AuthLayout>
 </template>
 
 <style scoped>
