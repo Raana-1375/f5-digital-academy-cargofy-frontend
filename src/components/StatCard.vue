@@ -3,7 +3,7 @@ defineProps({
   variant: {
     type: String,
     default: 'total',
-    validator: (value) => ['total', 'transit', 'customs', 'delivered'].includes(value),
+    validator: (value) => ['total', 'preparing', 'transit', 'customs', 'delivered'].includes(value),
   },
   label: { type: String, required: true },
   value: { type: Number, default: 0 },
@@ -29,6 +29,10 @@ defineProps({
             <rect x="3" y="4" width="18" height="4" rx="1" />
             <path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" />
             <path d="M10 12h4" />
+          </template>
+          <template v-else-if="variant === 'preparing'">
+            <path d="M21 8l-9-5-9 5v8l9 5 9-5z" />
+            <path d="M3 8l9 5 9-5M12 13v8" />
           </template>
           <template v-else-if="variant === 'transit'">
             <path d="M3 6h11v10H3z" />
@@ -75,6 +79,11 @@ defineProps({
   border-radius: var(--radius-md);
   background: var(--color-icon-bg);
   color: var(--status-transit-text);
+}
+
+.stat-card--preparing .stat-card__icon {
+  background: var(--status-preparing-bg);
+  color: var(--status-preparing-text);
 }
 
 .stat-card--transit .stat-card__icon {
