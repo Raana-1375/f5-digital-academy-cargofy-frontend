@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useAccountStore } from '@/stores/account'
 import { validatePasswordChange, validateProfile } from '@/utils/validation'
 import AppNav from '@/components/AppNav.vue'
+import PageBanner from '@/components/PageBanner.vue'
 
 const account = useAccountStore()
 
@@ -80,10 +81,10 @@ onMounted(load)
     <AppNav />
 
     <main class="account">
-      <header class="account__header">
-        <h1>Account &amp; Settings</h1>
-        <p>Manage your profile, company details and password.</p>
-      </header>
+      <PageBanner
+        title="Account & Settings"
+        subtitle="Manage your profile, company details and password."
+      />
 
       <p v-if="account.loading" class="account__status">Loading your account...</p>
 
@@ -221,17 +222,6 @@ onMounted(load)
   max-width: 640px;
   margin: 0 auto;
   padding: 24px 16px 96px;
-}
-
-.account__header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.account__header p {
-  margin-bottom: 16px;
-  color: var(--color-text-muted);
 }
 
 .account__status {
