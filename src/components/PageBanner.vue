@@ -48,6 +48,11 @@ defineProps({
 
 .page-banner__content {
   position: relative;
+  max-width: 62%;
+}
+
+.page-banner__content {
+  max-width: 58%;
 }
 
 .page-banner__title {
