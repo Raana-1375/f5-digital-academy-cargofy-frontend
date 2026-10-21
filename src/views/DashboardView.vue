@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useDashboardStore } from '@/stores/dashboard'
 import { usePermissions } from '@/composables/usePermissions'
 import { formatFullDate } from '@/utils/format'
+import heroImage from '@/assets/hero-logistics.jpg'
 import AppNav from '@/components/AppNav.vue'
 import StatCard from '@/components/StatCard.vue'
 import ShipmentCard from '@/components/ShipmentCard.vue'
@@ -22,19 +23,24 @@ onMounted(() => {
     <AppNav />
 
     <main class="dashboard">
-      <div class="dashboard__chips">
-        <span class="chip chip--date">{{ formatFullDate() }}</span>
-        <span class="chip chip--status">
-          <span class="chip__dot"></span>
-          Systems Nominal
-        </span>
-      </div>
+      <section class="hero" :style="{ backgroundImage: `url(${heroImage})` }">
+        <div class="hero__content">
+          <div class="hero__chips">
+            <span class="chip chip--date">{{ formatFullDate() }}</span>
+            <span class="chip chip--status">
+              <span class="chip__dot"></span>
+              Systems Nominal
+            </span>
+          </div>
 
-      <h1 class="dashboard__title">Welcome, {{ auth.user?.name }}</h1>
+          <h1 class="hero__title">Welcome, {{ auth.user?.name }}</h1>
+          <p class="hero__subtitle">Air, sea and road freight, tracked end to end.</p>
 
-      <router-link v-if="canCreateShipment" to="/shipments/new" class="dashboard__create">
-        + Create New Shipment
-      </router-link>
+          <router-link v-if="canCreateShipment" to="/shipments/new" class="hero__create">
+            + Create New Shipment
+          </router-link>
+        </div>
+      </section>
 
       <p v-if="dashboard.loading" class="dashboard__message">Loading...</p>
 
@@ -100,7 +106,39 @@ onMounted(() => {
   padding: 24px 16px 96px;
 }
 
-.dashboard__chips {
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  padding: 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border-radius: 18px;
+  background-color: #0b2a8a;
+  background-position: 72% bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 28, 92, 0.92) 0%,
+    rgba(8, 28, 92, 0.6) 45%,
+    rgba(8, 28, 92, 0) 75%
+  );
+}
+
+.hero__content {
+  position: relative;
+}
+
+.hero__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -114,39 +152,45 @@ onMounted(() => {
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .chip--date {
-  background: #e7eefe;
-  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 
 .chip--status {
-  background: #d4e7e1;
-  color: var(--color-success);
+  background: rgba(127, 252, 151, 0.22);
+  color: #c9ffd6;
 }
 
 .chip__dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-success);
+  background: #7ffc97;
 }
 
-.dashboard__title {
-  margin-bottom: 16px;
+.hero__title {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--color-text);
+  font-weight: 800;
+  line-height: 1.15;
 }
 
-.dashboard__create {
+.hero__subtitle {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  opacity: 0.88;
+}
+
+.hero__create {
   display: block;
   padding: 14px;
-  margin-bottom: 24px;
+  margin-top: 20px;
   border-radius: var(--radius-md);
   background: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   color: #fff;
   font-weight: 600;
   text-align: center;
@@ -163,6 +207,7 @@ onMounted(() => {
 .dashboard__total {
   grid-column: 1 / -1;
 }
+
 .dashboard__recent-header {
   display: flex;
   align-items: center;
@@ -213,7 +258,33 @@ onMounted(() => {
     padding-bottom: 32px;
   }
 
-  .dashboard__create {
+  .hero {
+    justify-content: center;
+    min-height: 340px;
+    padding: 32px;
+    background-color: #0d50ca;
+    background-position: right center;
+    background-size: auto 100%;
+  }
+
+  .hero::before {
+    background: linear-gradient(
+      90deg,
+      rgba(8, 28, 92, 0.92) 0%,
+      rgba(8, 28, 92, 0.92) 40%,
+      rgba(8, 28, 92, 0) 70%
+    );
+  }
+
+  .hero__content {
+    max-width: 46%;
+  }
+
+  .hero__title {
+    font-size: 2.4rem;
+  }
+
+  .hero__create {
     display: inline-block;
     padding: 12px 24px;
   }
