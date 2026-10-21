@@ -82,8 +82,16 @@ describe('DashboardView', () => {
     mockSummary(baseSummary)
     const wrapper = await mountDashboard()
     const values = wrapper.findAll('.stat-card__value').map((el) => el.text())
+    const labels = wrapper.findAll('.stat-card__label').map((el) => el.text())
 
-    expect(values).toEqual(['5', '2', '1', '1'])
+    expect(labels).toEqual([
+      'Total Shipments',
+      'Preparing',
+      'In Transit',
+      'In Customs',
+      'Delivered',
+    ])
+    expect(values).toEqual(['5', '1', '2', '1', '1'])
   })
 
   it('shows the Action badge only when shipments are in customs', async () => {
