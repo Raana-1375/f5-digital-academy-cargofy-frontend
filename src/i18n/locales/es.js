@@ -62,6 +62,16 @@ export default {
     estDelivery: 'Fecha estimada de entrega',
     notes: 'Notas',
   },
+
+  timeline: {
+    title: 'Historial del envío',
+    updates: '{count} actualización | {count} actualizaciones',
+    empty: 'Aún no hay actualizaciones de estado.',
+    current: 'Actual',
+  },
+  stepper: {
+    label: 'Progreso del envío',
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',

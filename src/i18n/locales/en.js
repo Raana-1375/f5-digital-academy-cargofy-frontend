@@ -61,6 +61,16 @@ export default {
     estDelivery: 'Est. Delivery Date',
     notes: 'Notes',
   },
+
+  timeline: {
+    title: 'Shipment History',
+    updates: '{count} Update | {count} Updates',
+    empty: 'No status updates yet.',
+    current: 'Current',
+  },
+  stepper: {
+    label: 'Shipment progress',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',
