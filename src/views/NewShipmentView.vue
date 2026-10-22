@@ -91,18 +91,21 @@ onMounted(loadOptions)
 
     <main class="new">
       <PageBanner
-        title="Book Shipment"
-        subtitle="Enter the route, cargo details, client assignment and dispatch schedule."
+        :title="$t('banner.newShipment.title')"
+        :subtitle="$t('banner.newShipment.subtitle')"
       />
 
       <form class="new__form" novalidate @submit.prevent="submit">
         <div class="field">
-          <label for="origin">Origin Port / Hub <span class="required">Required</span></label>
+          <label for="origin">
+            {{ $t('newShipment.origin') }}
+            <span class="required">{{ $t('newShipment.required') }}</span>
+          </label>
           <input
             id="origin"
             v-model="form.origin"
             type="text"
-            placeholder="e.g. Port of Hamburg (DEHAM)"
+            :placeholder="$t('newShipment.originPlaceholder')"
             :aria-invalid="!!errors.origin"
           />
           <p v-if="errors.origin" class="field__error">{{ errors.origin }}</p>
@@ -110,47 +113,54 @@ onMounted(loadOptions)
 
         <div class="field">
           <label for="destination">
-            Destination Port / Hub <span class="required">Required</span>
+            {{ $t('newShipment.destination') }}
+            <span class="required">{{ $t('newShipment.required') }}</span>
           </label>
           <input
             id="destination"
             v-model="form.destination"
             type="text"
-            placeholder="e.g. Port of New York & New Jersey (USNYC)"
+            :placeholder="$t('newShipment.destinationPlaceholder')"
             :aria-invalid="!!errors.destination"
           />
           <p v-if="errors.destination" class="field__error">{{ errors.destination }}</p>
         </div>
 
-        <h2 class="new__section">Cargo details</h2>
+        <h2 class="new__section">{{ $t('newShipment.cargoSection') }}</h2>
 
         <div class="field-row">
           <div class="field">
-            <label for="transportMode">Transport Mode <span class="required">Required</span></label>
+            <label for="transportMode">
+              {{ $t('newShipment.transportMode') }}
+              <span class="required">{{ $t('newShipment.required') }}</span>
+            </label>
             <select
               id="transportMode"
               v-model="form.transportMode"
               :aria-invalid="!!errors.transportMode"
             >
-              <option value="">Select mode</option>
-              <option value="AIR">✈️ Air</option>
-              <option value="SEA">🚢 Sea</option>
-              <option value="ROAD">🚚 Road</option>
+              <option value="">{{ $t('newShipment.selectMode') }}</option>
+              <option value="AIR">{{ $t('newShipment.modeAir') }}</option>
+              <option value="SEA">{{ $t('newShipment.modeSea') }}</option>
+              <option value="ROAD">{{ $t('newShipment.modeRoad') }}</option>
             </select>
             <p v-if="errors.transportMode" class="field__error">{{ errors.transportMode }}</p>
           </div>
 
           <div class="field">
-            <label for="packageType">Package Type <span class="required">Required</span></label>
+            <label for="packageType">
+              {{ $t('newShipment.packageType') }}
+              <span class="required">{{ $t('newShipment.required') }}</span>
+            </label>
             <select
               id="packageType"
               v-model="form.packageType"
               :aria-invalid="!!errors.packageType"
             >
-              <option value="">Select package</option>
-              <option value="PALLET">📦 Pallet</option>
-              <option value="BOX">🧰 Box</option>
-              <option value="ENVELOPE">✉️ Envelope</option>
+              <option value="">{{ $t('newShipment.selectPackage') }}</option>
+              <option value="PALLET">{{ $t('newShipment.packagePallet') }}</option>
+              <option value="BOX">{{ $t('newShipment.packageBox') }}</option>
+              <option value="ENVELOPE">{{ $t('newShipment.packageEnvelope') }}</option>
             </select>
             <p v-if="errors.packageType" class="field__error">{{ errors.packageType }}</p>
           </div>
@@ -158,28 +168,34 @@ onMounted(loadOptions)
 
         <div class="field-row">
           <div class="field">
-            <label for="quantity">Quantity <span class="required">Required</span></label>
+            <label for="quantity">
+              {{ $t('newShipment.quantity') }}
+              <span class="required">{{ $t('newShipment.required') }}</span>
+            </label>
             <input
               id="quantity"
               v-model.number="form.quantity"
               type="number"
               min="1"
               step="1"
-              placeholder="e.g. 10"
+              :placeholder="$t('newShipment.quantityPlaceholder')"
               :aria-invalid="!!errors.quantity"
             />
             <p v-if="errors.quantity" class="field__error">{{ errors.quantity }}</p>
           </div>
 
           <div class="field">
-            <label for="weightKg">Total Weight (kg) <span class="required">Required</span></label>
+            <label for="weightKg">
+              {{ $t('newShipment.weight') }}
+              <span class="required">{{ $t('newShipment.required') }}</span>
+            </label>
             <input
               id="weightKg"
               v-model.number="form.weightKg"
               type="number"
               min="0"
               step="0.01"
-              placeholder="e.g. 250.5"
+              :placeholder="$t('newShipment.weightPlaceholder')"
               :aria-invalid="!!errors.weightKg"
             />
             <p v-if="errors.weightKg" class="field__error">{{ errors.weightKg }}</p>
@@ -188,7 +204,8 @@ onMounted(loadOptions)
 
         <div class="field">
           <label for="goodsDescription">
-            Goods Description <span class="optional">(Optional)</span>
+            {{ $t('newShipment.goods') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
             <span
               class="counter"
               :class="{
@@ -202,20 +219,23 @@ onMounted(loadOptions)
             id="goodsDescription"
             v-model="form.goodsDescription"
             type="text"
-            placeholder="e.g. Bottled olive oil, 12 units per box"
+            :placeholder="$t('newShipment.goodsPlaceholder')"
             :aria-invalid="!!errors.goodsDescription"
           />
           <p v-if="errors.goodsDescription" class="field__error">{{ errors.goodsDescription }}</p>
         </div>
 
         <div class="field">
-          <label for="hsCode">HS Code <span class="optional">(Optional)</span></label>
+          <label for="hsCode">
+            {{ $t('newShipment.hsCode') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
+          </label>
           <input
             id="hsCode"
             v-model="form.hsCode"
             type="text"
             inputmode="numeric"
-            placeholder="6 to 10 digits, e.g. 220600"
+            :placeholder="$t('newShipment.hsCodePlaceholder')"
             :aria-invalid="!!errors.hsCode"
           />
           <p v-if="errors.hsCode" class="field__error">{{ errors.hsCode }}</p>
@@ -223,20 +243,22 @@ onMounted(loadOptions)
 
         <label class="check" for="dangerousGoods">
           <input id="dangerousGoods" v-model="form.dangerousGoods" type="checkbox" />
-          <span>⚠️ Dangerous goods (hazardous materials)</span>
+          <span>{{ $t('newShipment.dangerous') }}</span>
         </label>
 
         <p v-if="form.dangerousGoods" class="new__warning" role="alert">
-          ⚠️ Dangerous goods require special documentation and handling. The operator will review
-          this shipment before dispatch.
+          {{ $t('newShipment.dangerousWarning') }}
         </p>
 
-        <h2 class="new__section">Assignment &amp; schedule</h2>
+        <h2 class="new__section">{{ $t('newShipment.assignmentSection') }}</h2>
 
         <div class="field">
-          <label for="client">Client <span class="optional">(Optional)</span></label>
+          <label for="client">
+            {{ $t('newShipment.client') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
+          </label>
           <select id="client" v-model="form.clientId">
-            <option value="">Select client</option>
+            <option value="">{{ $t('newShipment.selectClient') }}</option>
             <option v-for="client in clients" :key="client.id" :value="client.id">
               {{ optionLabel(client) }}
             </option>
@@ -244,9 +266,12 @@ onMounted(loadOptions)
         </div>
 
         <div class="field">
-          <label for="operator">Assigned Operator <span class="optional">(Optional)</span></label>
+          <label for="operator">
+            {{ $t('newShipment.operator') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
+          </label>
           <select id="operator" v-model="form.operatorId">
-            <option value="">Select freight broker / operator</option>
+            <option value="">{{ $t('newShipment.selectOperator') }}</option>
             <option v-for="operator in operators" :key="operator.id" :value="operator.id">
               {{ optionLabel(operator) }}
             </option>
@@ -254,19 +279,21 @@ onMounted(loadOptions)
         </div>
 
         <p v-if="optionsError" class="field__error" role="alert">
-          Could not load clients and operators: {{ optionsError }}
+          {{ $t('newShipment.optionsError', { error: optionsError }) }}
         </p>
 
         <div class="field">
           <label for="delivery">
-            Estimated Delivery Date <span class="optional">(Optional)</span>
+            {{ $t('newShipment.delivery') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
           </label>
           <input id="delivery" v-model="form.estimatedDelivery" type="date" />
         </div>
 
         <div class="field">
           <label for="note">
-            Notes <span class="optional">(Optional)</span>
+            {{ $t('newShipment.notes') }}
+            <span class="optional">{{ $t('newShipment.optional') }}</span>
             <span class="counter" :class="{ 'counter--over': form.note.length > NOTE_MAX_LENGTH }">
               {{ form.note.length }}/{{ NOTE_MAX_LENGTH }}
             </span>
@@ -275,7 +302,7 @@ onMounted(loadOptions)
             id="note"
             v-model="form.note"
             rows="4"
-            placeholder="Special handling instructions, container number, reefer temperature requirements..."
+            :placeholder="$t('newShipment.notesPlaceholder')"
             :aria-invalid="!!errors.note"
           ></textarea>
           <p v-if="errors.note" class="field__error">{{ errors.note }}</p>
@@ -284,9 +311,11 @@ onMounted(loadOptions)
         <p v-if="submitError" class="new__error" role="alert">{{ submitError }}</p>
 
         <div class="new__actions">
-          <router-link to="/shipments" class="btn btn--secondary">Cancel</router-link>
+          <router-link to="/shipments" class="btn btn--secondary">{{
+            $t('newShipment.cancel')
+          }}</router-link>
           <button type="submit" class="btn btn--primary" :disabled="submitting">
-            {{ submitting ? 'Creating...' : 'Create Shipment' }}
+            {{ submitting ? $t('newShipment.creating') : $t('newShipment.create') }}
           </button>
         </div>
       </form>
