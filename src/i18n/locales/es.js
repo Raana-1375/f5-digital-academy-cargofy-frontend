@@ -211,6 +211,13 @@ export default {
     submitting: 'Creando cuenta...',
     haveAccount: '¿Ya tienes una cuenta?',
   },
+
+  showcase: {
+    chip: 'Seguimiento de carga internacional',
+    titleLine1: 'Cada envío,',
+    titleLine2: 'rastreado de principio a fin.',
+    text: 'Carga aérea, marítima y terrestre en un solo lugar, de la reserva a la entrega.',
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',

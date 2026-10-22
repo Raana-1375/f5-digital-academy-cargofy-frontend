@@ -210,6 +210,13 @@ export default {
     submitting: 'Creating account...',
     haveAccount: 'Already have an account?',
   },
+
+  showcase: {
+    chip: 'International freight tracking',
+    titleLine1: 'Every shipment,',
+    titleLine2: 'tracked end to end.',
+    text: 'Air, sea and road freight in one place, from booking to delivery.',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',
