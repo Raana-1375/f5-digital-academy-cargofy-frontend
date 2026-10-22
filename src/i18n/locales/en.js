@@ -10,6 +10,17 @@ export default {
     inTransit: 'In Transit',
     delivered: 'Delivered',
   },
+
+  transport: {
+    air: 'Air',
+    sea: 'Sea',
+    road: 'Road',
+  },
+  package: {
+    pallet: 'Pallet | Pallets',
+    box: 'Box | Boxes',
+    envelope: 'Envelope | Envelopes',
+  },
   language: {
     label: 'Language',
   },

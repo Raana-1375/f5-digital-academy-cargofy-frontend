@@ -10,6 +10,17 @@ export default {
     inTransit: 'En tránsito',
     delivered: 'Entregado',
   },
+
+  transport: {
+    air: 'Aéreo',
+    sea: 'Marítimo',
+    road: 'Terrestre',
+  },
+  package: {
+    pallet: 'Palé | Palés',
+    box: 'Caja | Cajas',
+    envelope: 'Sobre | Sobres',
+  },
   language: {
     label: 'Idioma',
   },

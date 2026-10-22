@@ -35,4 +35,10 @@ export function setLocale(locale) {
   }
 }
 
+const LOCALE_TAGS = { en: 'en-US', es: 'es-ES' }
+
+// BCP 47 tag used by Intl for dates and numbers in the current language.
+export function getLocaleTag() {
+  return LOCALE_TAGS[i18n.global.locale.value] ?? 'en-US'
+}
 export default i18n
