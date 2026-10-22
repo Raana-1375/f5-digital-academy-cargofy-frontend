@@ -1,4 +1,8 @@
 export default {
+  common: {
+    loading: 'Loading...',
+    tryAgain: 'Try again',
+  },
   language: {
     label: 'Language',
   },
@@ -26,5 +30,22 @@ export default {
     support: 'Support: Mon–Fri, 9:00–18:00',
     rights: '© {year} Cargofy. All rights reserved.',
     demo: 'Demo project built at Factoría F5',
+  },
+  dashboard: {
+    systemsNominal: 'Systems Nominal',
+    welcome: 'Welcome, {name}',
+    tagline: 'Air, sea and road freight, tracked end to end.',
+    createShipment: '+ Create New Shipment',
+    stats: {
+      total: 'Total Shipments',
+      preparing: 'Preparing',
+      inTransit: 'In Transit',
+      customs: 'In Customs',
+      delivered: 'Delivered',
+      action: 'Action',
+    },
+    recent: 'Recent Shipments',
+    viewAll: 'View all ({count})',
+    empty: 'No shipments yet.',
   },
 }

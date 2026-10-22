@@ -1,4 +1,8 @@
 export default {
+  common: {
+    loading: 'Cargando...',
+    tryAgain: 'Reintentar',
+  },
   language: {
     label: 'Idioma',
   },
@@ -26,5 +30,22 @@ export default {
     support: 'Soporte: lun–vie, 9:00–18:00',
     rights: '© {year} Cargofy. Todos los derechos reservados.',
     demo: 'Proyecto de demostración creado en Factoría F5',
+  },
+  dashboard: {
+    systemsNominal: 'Sistemas operativos',
+    welcome: 'Bienvenido/a, {name}',
+    tagline: 'Carga aérea, marítima y terrestre, rastreada de principio a fin.',
+    createShipment: '+ Crear nuevo envío',
+    stats: {
+      total: 'Envíos totales',
+      preparing: 'En preparación',
+      inTransit: 'En tránsito',
+      customs: 'En aduana',
+      delivered: 'Entregados',
+      action: 'Acción',
+    },
+    recent: 'Envíos recientes',
+    viewAll: 'Ver todos ({count})',
+    empty: 'Aún no hay envíos.',
   },
 }
