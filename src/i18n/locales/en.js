@@ -71,6 +71,16 @@ export default {
   stepper: {
     label: 'Shipment progress',
   },
+
+  statusModal: {
+    title: 'Update Status',
+    newStatus: 'New status',
+    note: 'Note (optional)',
+    notePlaceholder: 'Add details about this change...',
+    cancel: 'Cancel',
+    saving: 'Saving...',
+    confirm: 'Confirm',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',
