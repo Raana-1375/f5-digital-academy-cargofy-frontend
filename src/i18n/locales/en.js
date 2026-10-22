@@ -29,6 +29,15 @@ export default {
     showing: 'Showing {start}-{end} shipments',
     showingOf: 'Showing {start}-{end} of {total} shipments',
   },
+  shipment: {
+    origin: 'Origin',
+    destination: 'Destination',
+    dangerous: 'Dangerous',
+    client: 'Client',
+    created: 'Created',
+    estArrival: 'Est. arrival',
+    viewDetails: 'View Details',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',
