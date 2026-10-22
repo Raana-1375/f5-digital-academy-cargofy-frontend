@@ -6,8 +6,9 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 <template>
   <main class="auth-page">
+    <LanguageSwitcher class="auth-lang" />
+
     <div class="auth-main">
-      <LanguageSwitcher class="auth-lang" />
       <slot />
     </div>
 
@@ -24,7 +25,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 </template>
 
 <style scoped>
-.auth-main {
+.auth-page {
   position: relative;
 }
 
@@ -32,7 +33,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .auth-showcase {
