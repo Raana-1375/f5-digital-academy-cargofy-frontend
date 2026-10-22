@@ -3,6 +3,13 @@ export default {
     loading: 'Loading...',
     tryAgain: 'Try again',
   },
+
+  status: {
+    preparing: 'Preparing',
+    customs: 'Customs',
+    inTransit: 'In Transit',
+    delivered: 'Delivered',
+  },
   language: {
     label: 'Language',
   },
