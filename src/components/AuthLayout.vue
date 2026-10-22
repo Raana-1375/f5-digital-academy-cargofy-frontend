@@ -1,27 +1,40 @@
 <script setup>
 import '../assets/auth.css'
 import heroImage from '@/assets/hero-logistics.jpg'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 </script>
 
 <template>
   <main class="auth-page">
     <div class="auth-main">
+      <LanguageSwitcher class="auth-lang" />
       <slot />
     </div>
 
     <aside class="auth-showcase" aria-hidden="true">
       <div class="auth-showcase__inner" :style="{ '--showcase-image': `url(${heroImage})` }">
-        <span class="auth-showcase__chip">International freight tracking</span>
-        <h2 class="auth-showcase__title">Every shipment,<br />tracked end to end.</h2>
-        <p class="auth-showcase__text">
-          Air, sea and road freight in one place, from booking to delivery.
-        </p>
+        <span class="auth-showcase__chip">{{ $t('showcase.chip') }}</span>
+        <h2 class="auth-showcase__title">
+          {{ $t('showcase.titleLine1') }}<br />{{ $t('showcase.titleLine2') }}
+        </h2>
+        <p class="auth-showcase__text">{{ $t('showcase.text') }}</p>
       </div>
     </aside>
   </main>
 </template>
 
 <style scoped>
+.auth-main {
+  position: relative;
+}
+
+.auth-lang {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
 .auth-showcase {
   display: none;
 }
