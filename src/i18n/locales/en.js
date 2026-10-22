@@ -37,6 +37,9 @@ export default {
     created: 'Created',
     estArrival: 'Est. arrival',
     viewDetails: 'View Details',
+    copy: 'Copy tracking number',
+    copied: 'Copied',
+    view: 'View',
   },
   common: {
     loading: 'Loading...',

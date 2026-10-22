@@ -38,6 +38,9 @@ export default {
     created: 'Creado',
     estArrival: 'Llegada est.',
     viewDetails: 'Ver detalles',
+    copy: 'Copiar número de seguimiento',
+    copied: 'Copiado',
+    view: 'Ver',
   },
   common: {
     loading: 'Cargando...',
