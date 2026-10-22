@@ -3,10 +3,10 @@ import { computed } from 'vue'
 import { getStatusInfo } from '@/utils/shipmentStatus'
 
 const STEPS = [
-  { tone: 'preparing', label: 'Preparing', icon: '📦' },
-  { tone: 'transit', label: 'In Transit', icon: '🚚' },
-  { tone: 'customs', label: 'Customs', icon: '🛃' },
-  { tone: 'delivered', label: 'Delivered', icon: '✅' },
+  { tone: 'preparing', labelKey: 'status.preparing', icon: '📦' },
+  { tone: 'transit', labelKey: 'status.inTransit', icon: '🚚' },
+  { tone: 'customs', labelKey: 'status.customs', icon: '🛃' },
+  { tone: 'delivered', labelKey: 'status.delivered', icon: '✅' },
 ]
 
 const props = defineProps({
@@ -27,7 +27,7 @@ function stepState(index) {
 </script>
 
 <template>
-  <ol class="stepper" aria-label="Shipment progress">
+  <ol class="stepper" :aria-label="$t('stepper.label')">
     <li
       v-for="(step, index) in STEPS"
       :key="step.tone"
@@ -38,7 +38,7 @@ function stepState(index) {
       <span class="stepper__circle" aria-hidden="true">
         {{ stepState(index) === 'done' ? '✓' : step.icon }}
       </span>
-      <span class="stepper__label">{{ step.label }}</span>
+      <span class="stepper__label">{{ $t(step.labelKey) }}</span>
     </li>
   </ol>
 </template>
