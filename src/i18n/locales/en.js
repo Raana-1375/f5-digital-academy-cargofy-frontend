@@ -17,6 +17,18 @@ export default {
       subtitle: 'Manage your profile, company details and password.',
     },
   },
+  shipments: {
+    newShipment: '+ New Shipment',
+    searchPlaceholder: 'Search by tracking number...',
+    searchLabel: 'Search by tracking number',
+    filterLabel: 'Filter by status',
+    all: 'All',
+    empty: 'No shipments found.',
+    previous: '← Previous',
+    next: 'Next →',
+    showing: 'Showing {start}-{end} shipments',
+    showingOf: 'Showing {start}-{end} of {total} shipments',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',

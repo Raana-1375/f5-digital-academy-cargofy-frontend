@@ -18,6 +18,18 @@ export default {
       subtitle: 'Gestiona tu perfil, los datos de la empresa y la contraseña.',
     },
   },
+  shipments: {
+    newShipment: '+ Nuevo envío',
+    searchPlaceholder: 'Buscar por número de seguimiento...',
+    searchLabel: 'Buscar por número de seguimiento',
+    filterLabel: 'Filtrar por estado',
+    all: 'Todos',
+    empty: 'No se han encontrado envíos.',
+    previous: '← Anterior',
+    next: 'Siguiente →',
+    showing: 'Mostrando {start}-{end} envíos',
+    showingOf: 'Mostrando {start}-{end} de {total} envíos',
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',
