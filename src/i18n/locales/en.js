@@ -1,4 +1,7 @@
 export default {
+  language: {
+    label: 'Language',
+  },
   nav: {
     home: 'Cargofy home',
     dashboard: 'Dashboard',
