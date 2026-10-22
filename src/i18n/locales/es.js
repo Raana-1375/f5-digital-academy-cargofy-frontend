@@ -1,4 +1,23 @@
 export default {
+  banner: {
+    shipments: {
+      title: 'Envíos',
+      subtitle: 'Carga multimodal activa a nivel global',
+    },
+    newShipment: {
+      title: 'Reservar envío',
+      subtitle:
+        'Introduce la ruta, los datos de la carga, el cliente asignado y el calendario de salida.',
+    },
+    detail: {
+      title: 'Detalles del envío',
+      subtitle: 'Ruta, carga e historial de estados.',
+    },
+    account: {
+      title: 'Cuenta y ajustes',
+      subtitle: 'Gestiona tu perfil, los datos de la empresa y la contraseña.',
+    },
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',

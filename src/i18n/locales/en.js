@@ -1,4 +1,22 @@
 export default {
+  banner: {
+    shipments: {
+      title: 'Shipments',
+      subtitle: 'Global multi-modal active freight',
+    },
+    newShipment: {
+      title: 'Book Shipment',
+      subtitle: 'Enter the route, cargo details, client assignment and dispatch schedule.',
+    },
+    detail: {
+      title: 'Shipment Details',
+      subtitle: 'Route, cargo and status history.',
+    },
+    account: {
+      title: 'Account & Settings',
+      subtitle: 'Manage your profile, company details and password.',
+    },
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',

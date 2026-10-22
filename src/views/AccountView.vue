@@ -81,9 +81,7 @@ onMounted(load)
     <AppNav />
 
     <main class="account">
-      <PageBanner
-        title="Account & Settings"
-        subtitle="Manage your profile, company details and password."
+      <PageBanner :title="$t('banner.account.title')" :subtitle="$t('banner.account.subtitle')" />
       />
 
       <p v-if="account.loading" class="account__status">Loading your account...</p>
