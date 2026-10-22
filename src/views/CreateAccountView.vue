@@ -13,8 +13,16 @@ const router = useRouter()
 const auth = useAuthStore()
 
 const roles = [
-  { value: 'CLIENT', title: 'Client', description: 'Shipment owner / importer' },
-  { value: 'OPERATOR', title: 'Operator', description: 'Freight broker / forwarder' },
+  {
+    value: 'CLIENT',
+    titleKey: 'signUp.roleClient',
+    descriptionKey: 'signUp.roleClientDescription',
+  },
+  {
+    value: 'OPERATOR',
+    titleKey: 'signUp.roleOperator',
+    descriptionKey: 'signUp.roleOperatorDescription',
+  },
 ]
 
 const form = reactive({
@@ -80,17 +88,17 @@ async function handleSubmit() {
     <section class="auth-card">
       <img :src="logo" alt="Cargofy" class="auth-logo" />
 
-      <h1 class="auth-title">Create Account</h1>
-      <p class="auth-subtitle">Join Cargofy to manage international freight and customs</p>
+      <h1 class="auth-title">{{ $t('signUp.title') }}</h1>
+      <p class="auth-subtitle">{{ $t('signUp.subtitle') }}</p>
 
       <form class="auth-form" novalidate @submit.prevent="handleSubmit">
         <div class="field">
-          <label for="fullName">Full Name</label>
+          <label for="fullName">{{ $t('signUp.fullName') }}</label>
           <input
             id="fullName"
             v-model="form.fullName"
             type="text"
-            placeholder="e.g. Alex Morgan"
+            :placeholder="$t('signUp.fullNamePlaceholder')"
             autocomplete="name"
             :class="{ invalid: errors.fullName }"
           />
@@ -98,7 +106,7 @@ async function handleSubmit() {
         </div>
 
         <div class="field">
-          <label for="email">Email Address</label>
+          <label for="email">{{ $t('auth.email') }}</label>
           <input
             id="email"
             v-model="form.email"
@@ -112,22 +120,23 @@ async function handleSubmit() {
 
         <div class="field">
           <label for="companyName">
-            Company Name <span v-if="!isOperator" class="optional">(optional)</span>
+            {{ $t('signUp.companyName') }}
+            <span v-if="!isOperator" class="optional">{{ $t('signUp.optional') }}</span>
           </label>
           <input
             id="companyName"
             v-model="form.companyName"
             type="text"
-            placeholder="e.g. Acme Logistics Corp"
+            :placeholder="$t('signUp.companyPlaceholder')"
             autocomplete="organization"
             :readonly="isOperator"
             :class="{ locked: isOperator }"
           />
-          <p v-if="isOperator" class="field-hint">Operators always belong to Cargofy.</p>
+          <p v-if="isOperator" class="field-hint">{{ $t('signUp.operatorCompanyHint') }}</p>
         </div>
 
         <fieldset class="field role-field">
-          <legend>Select your role</legend>
+          <legend>{{ $t('signUp.selectRole') }}</legend>
           <div class="role-cards">
             <label
               v-for="option in roles"
@@ -136,44 +145,44 @@ async function handleSubmit() {
               :class="{ selected: form.role === option.value }"
             >
               <input v-model="form.role" type="radio" name="role" :value="option.value" />
-              <span class="role-title">{{ option.title }}</span>
-              <span class="role-description">{{ option.description }}</span>
+              <span class="role-title">{{ $t(option.titleKey) }}</span>
+              <span class="role-description">{{ $t(option.descriptionKey) }}</span>
             </label>
           </div>
           <p v-if="errors.role" class="field-error">{{ errors.role }}</p>
         </fieldset>
 
         <div v-if="isOperator" class="field">
-          <label for="operatorAccessCode">Operator access code</label>
+          <label for="operatorAccessCode">{{ $t('signUp.accessCode') }}</label>
           <input
             id="operatorAccessCode"
             v-model="form.operatorAccessCode"
             type="password"
-            placeholder="Code provided by Cargofy"
+            :placeholder="$t('signUp.accessCodePlaceholder')"
             autocomplete="off"
             :class="{ invalid: errors.operatorAccessCode }"
           />
           <p v-if="errors.operatorAccessCode" class="field-error">
             {{ errors.operatorAccessCode }}
           </p>
-          <p v-else class="field-hint">Operator accounts require the code provided by Cargofy.</p>
+          <p v-else class="field-hint">{{ $t('signUp.accessCodeHint') }}</p>
         </div>
 
         <div class="field">
-          <label for="password">Password</label>
+          <label for="password">{{ $t('auth.password') }}</label>
           <div class="password-wrapper">
             <input
               id="password"
               v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
-              placeholder="Min. 8 characters"
+              :placeholder="$t('signUp.passwordPlaceholder')"
               autocomplete="new-password"
               :class="{ invalid: errors.password }"
             />
             <button
               type="button"
               class="toggle-password"
-              :aria-label="showPassword ? 'Hide password' : 'Show password'"
+              :aria-label="showPassword ? $t('auth.hidePassword') : $t('auth.showPassword')"
               @click="showPassword = !showPassword"
             >
               <svg
@@ -196,20 +205,20 @@ async function handleSubmit() {
         </div>
 
         <div class="field">
-          <label for="confirmPassword">Confirm Password</label>
+          <label for="confirmPassword">{{ $t('signUp.confirmPassword') }}</label>
           <div class="password-wrapper">
             <input
               id="confirmPassword"
               v-model="form.confirmPassword"
               :type="showConfirmPassword ? 'text' : 'password'"
-              placeholder="Re-enter password"
+              :placeholder="$t('signUp.confirmPlaceholder')"
               autocomplete="new-password"
               :class="{ invalid: errors.confirmPassword }"
             />
             <button
               type="button"
               class="toggle-password"
-              :aria-label="showConfirmPassword ? 'Hide password' : 'Show password'"
+              :aria-label="showConfirmPassword ? $t('auth.hidePassword') : $t('auth.showPassword')"
               @click="showConfirmPassword = !showConfirmPassword"
             >
               <svg
@@ -234,19 +243,19 @@ async function handleSubmit() {
         <p v-if="serverError" class="server-error" role="alert">{{ serverError }}</p>
 
         <button type="submit" class="btn btn-primary" :disabled="loading">
-          {{ loading ? 'Creating account...' : 'Sign Up →' }}
+          {{ loading ? $t('signUp.submitting') : $t('signUp.submit') }}
         </button>
       </form>
 
       <p class="switch-auth">
-        Already have an account?
-        <RouterLink to="/login">Sign In</RouterLink>
+        {{ $t('signUp.haveAccount') }}
+        <RouterLink to="/login">{{ $t('auth.signIn.title') }}</RouterLink>
       </p>
     </section>
 
     <footer class="auth-footer">
-      <p>Calle Comercio 42, Gijón, Spain</p>
-      <p>Support: Mon–Fri, 9:00–18:00 · support@cargofy.dev</p>
+      <p>{{ $t('auth.address') }}</p>
+      <p>{{ $t('footer.support') }} · support@cargofy.dev</p>
     </footer>
   </AuthLayout>
 </template>

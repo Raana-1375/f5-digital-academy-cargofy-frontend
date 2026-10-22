@@ -12,11 +12,11 @@ const { canCreateShipment } = usePermissions()
 let searchTimer = null
 
 const tabs = [
-  { label: 'All', value: '', key: 'ALL' },
-  { label: 'In Transit', value: 'IN_TRANSIT', key: 'IN_TRANSIT' },
-  { label: 'Customs', value: 'CUSTOMS', key: 'CUSTOMS' },
-  { label: 'Preparing', value: 'PREPARING', key: 'PREPARING' },
-  { label: 'Delivered', value: 'DELIVERED', key: 'DELIVERED' },
+  { labelKey: 'shipments.all', value: '', key: 'ALL' },
+  { labelKey: 'status.inTransit', value: 'IN_TRANSIT', key: 'IN_TRANSIT' },
+  { labelKey: 'status.customs', value: 'CUSTOMS', key: 'CUSTOMS' },
+  { labelKey: 'status.preparing', value: 'PREPARING', key: 'PREPARING' },
+  { labelKey: 'status.delivered', value: 'DELIVERED', key: 'DELIVERED' },
 ]
 
 function onSearchInput() {
@@ -38,9 +38,9 @@ onBeforeUnmount(() => {
     <AppNav />
 
     <main class="shipments">
-      <PageBanner title="Shipments" subtitle="Global multi-modal active freight">
+      <PageBanner :title="$t('banner.shipments.title')" :subtitle="$t('banner.shipments.subtitle')">
         <router-link v-if="canCreateShipment" to="/shipments/new" class="shipments__create">
-          + New Shipment
+          {{ $t('shipments.newShipment') }}
         </router-link>
       </PageBanner>
 
@@ -61,13 +61,13 @@ onBeforeUnmount(() => {
         <input
           v-model="searchText"
           type="search"
-          placeholder="Search by tracking number..."
-          aria-label="Search by tracking number"
+          :placeholder="$t('shipments.searchPlaceholder')"
+          :aria-label="$t('shipments.searchLabel')"
           @input="onSearchInput"
         />
       </label>
 
-      <div class="shipments__tabs" role="group" aria-label="Filter by status">
+      <div class="shipments__tabs" role="group" :aria-label="$t('shipments.filterLabel')">
         <button
           v-for="tab in tabs"
           :key="tab.key"
@@ -77,12 +77,12 @@ onBeforeUnmount(() => {
           :aria-pressed="store.status === tab.value"
           @click="store.setStatus(tab.value)"
         >
-          {{ tab.label }}
+          {{ $t(tab.labelKey) }}
           <span v-if="store.statusCounts">({{ store.statusCounts[tab.key] }})</span>
         </button>
       </div>
 
-      <p v-if="store.loading" class="shipments__message">Loading...</p>
+      <p v-if="store.loading" class="shipments__message">{{ $t('common.loading') }}</p>
 
       <div
         v-else-if="store.error"
@@ -90,10 +90,12 @@ onBeforeUnmount(() => {
         role="alert"
       >
         <p>{{ store.error }}</p>
-        <button type="button" @click="store.loadShipments()">Try again</button>
+        <button type="button" @click="store.loadShipments()">{{ $t('common.tryAgain') }}</button>
       </div>
 
-      <p v-else-if="store.shipments.length === 0" class="shipments__message">No shipments found.</p>
+      <p v-else-if="store.shipments.length === 0" class="shipments__message">
+        {{ $t('shipments.empty') }}
+      </p>
 
       <template v-else>
         <div class="shipments__list">
@@ -107,16 +109,22 @@ onBeforeUnmount(() => {
         <div class="shipments__pagination">
           <div class="shipments__pager">
             <button type="button" :disabled="!store.hasPrevious" @click="store.previousPage()">
-              ← Previous
+              {{ $t('shipments.previous') }}
             </button>
             <button type="button" :disabled="!store.hasNext" @click="store.nextPage()">
-              Next →
+              {{ $t('shipments.next') }}
             </button>
           </div>
           <p class="shipments__range">
-            Showing {{ store.rangeStart }}-{{ store.rangeEnd }}
-            <template v-if="store.total !== null">of {{ store.total }}</template>
-            shipments
+            {{
+              store.total !== null
+                ? $t('shipments.showingOf', {
+                    start: store.rangeStart,
+                    end: store.rangeEnd,
+                    total: store.total,
+                  })
+                : $t('shipments.showing', { start: store.rangeStart, end: store.rangeEnd })
+            }}
           </p>
         </div>
       </template>

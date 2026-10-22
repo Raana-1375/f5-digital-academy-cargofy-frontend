@@ -61,7 +61,7 @@ async function copyTrackingNumber() {
           <button
             type="button"
             class="shipment-card__copy"
-            :aria-label="copied ? 'Copied' : 'Copy tracking number'"
+            :aria-label="copied ? $t('shipment.copied') : $t('shipment.copy')"
             @click="copyTrackingNumber"
           >
             <svg
@@ -95,9 +95,9 @@ async function copyTrackingNumber() {
 
       <div class="shipment-card__footer">
         <span class="shipment-card__date">{{ formatDate(shipment.createdDate) }}</span>
-        <router-link :to="`/shipments/${shipment.id}`" class="shipment-card__link"
-          >View</router-link
-        >
+        <router-link :to="`/shipments/${shipment.id}`" class="shipment-card__link">{{
+          $t('shipment.view')
+        }}</router-link>
       </div>
     </div>
   </article>

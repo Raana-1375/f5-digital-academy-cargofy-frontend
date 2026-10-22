@@ -38,12 +38,12 @@ async function handleSubmit() {
     <section class="auth-card">
       <img :src="logo" alt="Cargofy" class="auth-logo" />
 
-      <h1 class="auth-title">Sign In</h1>
-      <p class="auth-subtitle">Enter your credentials to track and manage shipments</p>
+      <h1 class="auth-title">{{ $t('auth.signIn.title') }}</h1>
+      <p class="auth-subtitle">{{ $t('auth.signIn.subtitle') }}</p>
 
       <form class="auth-form" novalidate @submit.prevent="handleSubmit">
         <div class="field">
-          <label for="email">Email Address</label>
+          <label for="email">{{ $t('auth.email') }}</label>
           <input
             id="email"
             v-model="form.email"
@@ -56,7 +56,7 @@ async function handleSubmit() {
         </div>
 
         <div class="field">
-          <label for="password">Password</label>
+          <label for="password">{{ $t('auth.password') }}</label>
           <div class="password-wrapper">
             <input
               id="password"
@@ -69,7 +69,7 @@ async function handleSubmit() {
             <button
               type="button"
               class="toggle-password"
-              :aria-label="showPassword ? 'Hide password' : 'Show password'"
+              :aria-label="showPassword ? $t('auth.hidePassword') : $t('auth.showPassword')"
               @click="showPassword = !showPassword"
             >
               <svg
@@ -94,18 +94,20 @@ async function handleSubmit() {
         <p v-if="serverError" class="server-error" role="alert">{{ serverError }}</p>
 
         <button type="submit" class="btn btn-primary" :disabled="loading">
-          {{ loading ? 'Signing in...' : 'Sign In →' }}
+          {{ loading ? $t('auth.signIn.submitting') : $t('auth.signIn.submit') }}
         </button>
       </form>
 
-      <div class="divider"><span>OR</span></div>
+      <div class="divider">
+        <span>{{ $t('auth.or') }}</span>
+      </div>
 
-      <RouterLink to="/register" class="btn btn-soft">Create Account</RouterLink>
+      <RouterLink to="/register" class="btn btn-soft">{{ $t('auth.createAccount') }}</RouterLink>
     </section>
 
     <footer class="auth-footer">
-      <p>Calle Comercio 42, Gijón, Spain</p>
-      <p>Support: Mon–Fri, 9:00–18:00 · support@cargofy.dev</p>
+      <p>{{ $t('auth.address') }}</p>
+      <p>{{ $t('footer.support') }} · support@cargofy.dev</p>
     </footer>
   </AuthLayout>
 </template>

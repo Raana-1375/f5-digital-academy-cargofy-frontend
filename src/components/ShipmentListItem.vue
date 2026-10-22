@@ -53,12 +53,12 @@ const transport = computed(() => getTransportInfo(props.shipment.transportMode))
 
     <div class="list-item__route">
       <div>
-        <span class="list-item__label">Origin</span>
+        <span class="list-item__label">{{ $t('shipment.origin') }}</span>
         <p class="list-item__place">{{ shipment.origin }}</p>
       </div>
       <span class="list-item__arrow" aria-hidden="true">→</span>
       <div class="list-item__destination">
-        <span class="list-item__label">Destination</span>
+        <span class="list-item__label">{{ $t('shipment.destination') }}</span>
         <p class="list-item__place">{{ shipment.destination }}</p>
       </div>
     </div>
@@ -74,28 +74,28 @@ const transport = computed(() => getTransportInfo(props.shipment.transportMode))
         {{ formatWeight(shipment.weightKg) }}
       </span>
       <span v-if="shipment.dangerousGoods" class="list-item__chip list-item__chip--danger">
-        ⚠️ Dangerous
+        ⚠️ {{ $t('shipment.dangerous') }}
       </span>
     </div>
 
     <div class="list-item__meta">
       <div>
-        <span class="list-item__label">Client</span>
+        <span class="list-item__label">{{ $t('shipment.client') }}</span>
         <p>{{ shipment.clientName || '—' }}</p>
       </div>
       <div>
-        <span class="list-item__label">Created</span>
+        <span class="list-item__label">{{ $t('shipment.created') }}</span>
         <p>{{ formatDate(shipment.createdDate) || '—' }}</p>
       </div>
       <div>
-        <span class="list-item__label">Est. arrival</span>
+        <span class="list-item__label">{{ $t('shipment.estArrival') }}</span>
         <p>{{ formatDate(shipment.estimatedDelivery) || '—' }}</p>
       </div>
     </div>
 
     <div class="list-item__footer">
       <router-link :to="`/shipments/${shipment.id}`" class="list-item__link"
-        >View Details ›</router-link
+        >{{ $t('shipment.viewDetails') }} ›</router-link
       >
     </div>
   </article>

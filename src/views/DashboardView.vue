@@ -29,20 +29,20 @@ onMounted(() => {
             <span class="chip chip--date">{{ formatFullDate() }}</span>
             <span class="chip chip--status">
               <span class="chip__dot"></span>
-              Systems Nominal
+              {{ $t('dashboard.systemsNominal') }}
             </span>
           </div>
 
-          <h1 class="hero__title">Welcome, {{ auth.user?.name }}</h1>
-          <p class="hero__subtitle">Air, sea and road freight, tracked end to end.</p>
+          <h1 class="hero__title">{{ $t('dashboard.welcome', { name: auth.user?.name }) }}</h1>
+          <p class="hero__subtitle">{{ $t('dashboard.tagline') }}</p>
 
           <router-link v-if="canCreateShipment" to="/shipments/new" class="hero__create">
-            + Create New Shipment
+            {{ $t('dashboard.createShipment') }}
           </router-link>
         </div>
       </section>
 
-      <p v-if="dashboard.loading" class="dashboard__message">Loading...</p>
+      <p v-if="dashboard.loading" class="dashboard__message">{{ $t('common.loading') }}</p>
 
       <div
         v-else-if="dashboard.error"
@@ -50,7 +50,7 @@ onMounted(() => {
         role="alert"
       >
         <p>{{ dashboard.error }}</p>
-        <button type="button" @click="dashboard.loadSummary()">Try again</button>
+        <button type="button" @click="dashboard.loadSummary()">{{ $t('common.tryAgain') }}</button>
       </div>
 
       <template v-else-if="dashboard.summary">
@@ -58,28 +58,42 @@ onMounted(() => {
           <StatCard
             class="dashboard__total"
             variant="total"
-            label="Total Shipments"
+            :label="$t('dashboard.stats.total')"
             :value="dashboard.summary.total"
           />
-          <StatCard variant="preparing" label="Preparing" :value="dashboard.summary.preparing" />
-          <StatCard variant="transit" label="In Transit" :value="dashboard.summary.inTransit" />
+          <StatCard
+            variant="preparing"
+            :label="$t('dashboard.stats.preparing')"
+            :value="dashboard.summary.preparing"
+          />
+          <StatCard
+            variant="transit"
+            :label="$t('dashboard.stats.inTransit')"
+            :value="dashboard.summary.inTransit"
+          />
           <StatCard
             variant="customs"
-            label="In Customs"
+            :label="$t('dashboard.stats.customs')"
             :value="dashboard.summary.customs"
-            :badge="dashboard.needsCustomsAttention ? 'Action' : ''"
+            :badge="dashboard.needsCustomsAttention ? $t('dashboard.stats.action') : ''"
           />
-          <StatCard variant="delivered" label="Delivered" :value="dashboard.summary.delivered" />
+          <StatCard
+            variant="delivered"
+            :label="$t('dashboard.stats.delivered')"
+            :value="dashboard.summary.delivered"
+          />
         </section>
 
         <section class="dashboard__recent">
           <div class="dashboard__recent-header">
-            <h2>Recent Shipments</h2>
-            <router-link to="/shipments">View all ({{ dashboard.summary.total }})</router-link>
+            <h2>{{ $t('dashboard.recent') }}</h2>
+            <router-link to="/shipments">
+              {{ $t('dashboard.viewAll', { count: dashboard.summary.total }) }}
+            </router-link>
           </div>
 
           <p v-if="dashboard.recentShipments.length === 0" class="dashboard__message">
-            No shipments yet.
+            {{ $t('dashboard.empty') }}
           </p>
           <div v-else class="dashboard__list">
             <ShipmentCard

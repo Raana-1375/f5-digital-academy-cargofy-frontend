@@ -29,10 +29,10 @@ function onSubmit() {
       aria-labelledby="update-status-title"
       @submit.prevent="onSubmit"
     >
-      <h2 id="update-status-title">Update Status</h2>
+      <h2 id="update-status-title">{{ $t('statusModal.title') }}</h2>
 
       <label class="field">
-        <span class="field__label">New status</span>
+        <span class="field__label">{{ $t('statusModal.newStatus') }}</span>
         <select v-model="status" class="field__input">
           <option v-for="option in STATUS_OPTIONS" :key="option.value" :value="option.value">
             {{ option.label }}
@@ -41,13 +41,13 @@ function onSubmit() {
       </label>
 
       <label class="field">
-        <span class="field__label">Note (optional)</span>
+        <span class="field__label">{{ $t('statusModal.note') }}</span>
         <textarea
           v-model="note"
           class="field__input"
           rows="3"
           :maxlength="NOTE_MAX_LENGTH"
-          placeholder="Add details about this change..."
+          :placeholder="$t('statusModal.notePlaceholder')"
         ></textarea>
         <span class="field__counter">{{ note.length }}/{{ NOTE_MAX_LENGTH }}</span>
       </label>
@@ -61,14 +61,14 @@ function onSubmit() {
           :disabled="submitting"
           @click="emit('cancel')"
         >
-          Cancel
+          {{ $t('statusModal.cancel') }}
         </button>
         <button
           type="submit"
           class="btn btn--primary"
           :disabled="submitting || status === currentStatus"
         >
-          {{ submitting ? 'Saving...' : 'Confirm' }}
+          {{ submitting ? $t('statusModal.saving') : $t('statusModal.confirm') }}
         </button>
       </div>
     </form>

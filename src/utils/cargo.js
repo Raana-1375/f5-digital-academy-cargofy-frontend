@@ -1,34 +1,34 @@
-const TRANSPORT_MODES = {
-  AIR: { icon: '✈️', label: 'Air' },
-  SEA: { icon: '🚢', label: 'Sea' },
-  ROAD: { icon: '🚚', label: 'Road' },
-}
+import i18n, { getLocaleTag } from '@/i18n'
 
-const PACKAGE_TYPES = {
-  PALLET: { icon: '📦', label: 'Pallet', plural: 'Pallets' },
-  BOX: { icon: '🧰', label: 'Box', plural: 'Boxes' },
-  ENVELOPE: { icon: '✉️', label: 'Envelope', plural: 'Envelopes' },
-}
+const TRANSPORT_ICONS = { AIR: '✈️', SEA: '🚢', ROAD: '🚚' }
+const PACKAGE_KEYS = { PALLET: 'pallet', BOX: 'box', ENVELOPE: 'envelope' }
 
 const EMPTY = '—'
 
 export function getTransportInfo(mode) {
-  return TRANSPORT_MODES[mode] ?? { icon: '', label: EMPTY }
+  const icon = TRANSPORT_ICONS[mode]
+  if (!icon) return { icon: '', label: EMPTY }
+
+  return { icon, label: i18n.global.t(`transport.${mode.toLowerCase()}`) }
 }
 
 export function formatPackage(packageType, quantity) {
-  const info = PACKAGE_TYPES[packageType]
-  if (!info || !quantity) return EMPTY
-  return `${quantity} × ${quantity === 1 ? info.label : info.plural}`
+  const key = PACKAGE_KEYS[packageType]
+  if (!key || !quantity) return EMPTY
+
+  // The message holds "singular | plural"; the quantity picks one.
+  return `${quantity} × ${i18n.global.t(`package.${key}`, quantity)}`
 }
 
 export function formatWeight(weightKg) {
   if (weightKg === null || weightKg === undefined) return EMPTY
-  const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(weightKg)
+  const formatted = new Intl.NumberFormat(getLocaleTag(), { maximumFractionDigits: 2 }).format(
+    weightKg,
+  )
   return `${formatted} kg`
 }
 
 export function formatPrice(price) {
   if (price === null || price === undefined) return EMPTY
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(price)
+  return new Intl.NumberFormat(getLocaleTag(), { style: 'currency', currency: 'EUR' }).format(price)
 }

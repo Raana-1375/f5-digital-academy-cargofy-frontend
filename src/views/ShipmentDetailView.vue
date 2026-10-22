@@ -58,15 +58,17 @@ watch(
     <AppNav />
 
     <main class="detail">
-      <router-link to="/shipments" class="detail__back">← Back to Shipments</router-link>
+      <router-link to="/shipments" class="detail__back">{{ $t('detail.back') }}</router-link>
 
-      <PageBanner title="Shipment Details" subtitle="Route, cargo and status history." />
+      <PageBanner :title="$t('banner.detail.title')" :subtitle="$t('banner.detail.subtitle')" />
 
-      <p v-if="store.loading" class="detail__message">Loading...</p>
+      <p v-if="store.loading" class="detail__message">{{ $t('common.loading') }}</p>
 
       <div v-else-if="store.error" class="detail__message detail__message--error" role="alert">
         <p>{{ store.error }}</p>
-        <button type="button" @click="store.loadShipment(route.params.id)">Try again</button>
+        <button type="button" @click="store.loadShipment(route.params.id)">
+          {{ $t('common.tryAgain') }}
+        </button>
       </div>
 
       <div v-else-if="store.shipment" class="detail__grid">
@@ -74,13 +76,13 @@ watch(
           <section class="card">
             <div class="tracking">
               <div>
-                <span class="label">Tracking number</span>
+                <span class="label">{{ $t('detail.trackingNumber') }}</span>
                 <p class="tracking__number">
                   {{ store.shipment.trackingNumber }}
                   <button
                     type="button"
                     class="tracking__copy"
-                    :aria-label="copied ? 'Copied' : 'Copy tracking number'"
+                    :aria-label="copied ? $t('shipment.copied') : $t('shipment.copy')"
                     @click="copyTrackingNumber"
                   >
                     <svg
@@ -109,7 +111,7 @@ watch(
               class="detail__update"
               @click="openStatusModal"
             >
-              Update Status
+              {{ $t('detail.updateStatus') }}
             </button>
           </section>
           <section class="card">
@@ -120,79 +122,79 @@ watch(
             <div class="route__stop">
               <span class="route__dot route__dot--origin"></span>
               <div>
-                <span class="label">Origin</span>
+                <span class="label">{{ $t('shipment.origin') }}</span>
                 <p class="route__place">{{ store.shipment.origin }}</p>
               </div>
             </div>
             <div class="route__stop">
               <span class="route__dot"></span>
               <div>
-                <span class="label">Destination</span>
+                <span class="label">{{ $t('shipment.destination') }}</span>
                 <p class="route__place">{{ store.shipment.destination }}</p>
               </div>
             </div>
           </section>
 
           <section class="card">
-            <h2>Cargo Details</h2>
+            <h2>{{ $t('detail.cargoDetails') }}</h2>
             <dl class="info">
               <div class="info__row">
-                <dt>Transport Mode</dt>
+                <dt>{{ $t('detail.transportMode') }}</dt>
                 <dd>{{ transport.icon }} {{ transport.label }}</dd>
               </div>
               <div class="info__row">
-                <dt>Packages</dt>
+                <dt>{{ $t('detail.packages') }}</dt>
                 <dd>
                   {{ formatPackage(store.shipment.packageType, store.shipment.quantity) }}
                 </dd>
               </div>
               <div class="info__row">
-                <dt>Total Weight</dt>
+                <dt>{{ $t('detail.totalWeight') }}</dt>
                 <dd>{{ formatWeight(store.shipment.weightKg) }}</dd>
               </div>
               <div class="info__row">
-                <dt>Goods</dt>
+                <dt>{{ $t('detail.goods') }}</dt>
                 <dd>{{ store.shipment.goodsDescription || '—' }}</dd>
               </div>
               <div class="info__row">
-                <dt>HS Code</dt>
+                <dt>{{ $t('detail.hsCode') }}</dt>
                 <dd>{{ store.shipment.hsCode || '—' }}</dd>
               </div>
               <div
                 class="info__row"
                 :class="{ 'info__row--danger': store.shipment.dangerousGoods }"
               >
-                <dt>Dangerous Goods</dt>
-                <dd>{{ store.shipment.dangerousGoods ? '⚠️ Yes' : 'No' }}</dd>
+                <dt>{{ $t('detail.dangerousGoods') }}</dt>
+                <dd>{{ store.shipment.dangerousGoods ? $t('detail.yes') : $t('detail.no') }}</dd>
               </div>
               <div class="info__row info__row--price">
-                <dt>Estimated Price (indicative)</dt>
+                <dt>{{ $t('detail.estimatedPrice') }}</dt>
                 <dd>{{ formatPrice(store.shipment.estimatedPrice) }}</dd>
               </div>
             </dl>
           </section>
 
           <section class="card">
-            <h2>Shipment Info</h2>
+            <h2>{{ $t('detail.shipmentInfo') }}</h2>
             <dl class="info">
               <div class="info__row">
-                <dt>Client</dt>
+                <dt>{{ $t('shipment.client') }}</dt>
                 <dd>{{ store.shipment.clientName || '—' }}</dd>
               </div>
               <div class="info__row">
-                <dt>Assigned Operator</dt>
+                <dt>{{ $t('detail.assignedOperator') }}</dt>
                 <dd>{{ store.shipment.assignedOperatorName || '—' }}</dd>
               </div>
               <div class="info__row">
-                <dt>Est. Delivery Date</dt>
+                <dt>{{ $t('detail.estDelivery') }}</dt>
                 <dd>{{ formatDate(store.shipment.estimatedDelivery) || '—' }}</dd>
               </div>
               <div class="info__row">
-                <dt>Created</dt>
+                <dt>{{ $t('shipment.created') }}</dt>
                 <dd>{{ formatDate(store.shipment.createdDate) || '—' }}</dd>
               </div>
               <div v-if="store.shipment.note" class="info__row">
-                <dt>Notes</dt>
+                <dt>{{ $t('detail.notes') }}</dt>
                 <dd>{{ store.shipment.note }}</dd>
               </div>
             </dl>

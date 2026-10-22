@@ -9,27 +9,31 @@ const year = new Date().getFullYear()
     <div class="app-footer__grid">
       <div class="app-footer__brand">
         <img :src="logo" alt="Cargofy" class="app-footer__logo" />
-        <p class="app-footer__desc">
-          International shipment tracking for air, sea and road freight.
-        </p>
-        <ul class="app-footer__modes" aria-label="Transport modes">
-          <li>✈️ Air</li>
-          <li>🚢 Sea</li>
-          <li>🚚 Road</li>
+        <p class="app-footer__desc">{{ $t('footer.description') }}</p>
+        <ul class="app-footer__modes" :aria-label="$t('footer.modesLabel')">
+          <li>✈️ {{ $t('footer.modes.air') }}</li>
+          <li>🚢 {{ $t('footer.modes.sea') }}</li>
+          <li>🚚 {{ $t('footer.modes.road') }}</li>
         </ul>
       </div>
 
-      <nav class="app-footer__links" aria-label="Footer navigation">
-        <h2>Quick links</h2>
+      <nav class="app-footer__links" :aria-label="$t('footer.navLabel')">
+        <h2>{{ $t('footer.quickLinks') }}</h2>
         <ul class="app-footer__list">
-          <li><router-link to="/dashboard">Dashboard</router-link></li>
-          <li><router-link to="/shipments">Shipments</router-link></li>
-          <li><router-link to="/account">Profile</router-link></li>
+          <li>
+            <router-link to="/dashboard">{{ $t('nav.dashboard') }}</router-link>
+          </li>
+          <li>
+            <router-link to="/shipments">{{ $t('nav.shipments') }}</router-link>
+          </li>
+          <li>
+            <router-link to="/account">{{ $t('nav.profile') }}</router-link>
+          </li>
         </ul>
       </nav>
 
       <div class="app-footer__contact">
-        <h2>Contact</h2>
+        <h2>{{ $t('footer.contact') }}</h2>
         <ul class="app-footer__list">
           <li>
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -43,7 +47,7 @@ const year = new Date().getFullYear()
               <circle cx="12" cy="12" r="9" />
               <path d="M12 7v5l3 2" />
             </svg>
-            Support: Mon–Fri, 9:00–18:00
+            {{ $t('footer.support') }}
           </li>
           <li>
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -57,8 +61,8 @@ const year = new Date().getFullYear()
     </div>
 
     <div class="app-footer__bottom">
-      <span>© {{ year }} Cargofy. All rights reserved.</span>
-      <span>Demo project built at Factoría F5</span>
+      <span>{{ $t('footer.rights', { year }) }}</span>
+      <span>{{ $t('footer.demo') }}</span>
     </div>
   </footer>
 </template>

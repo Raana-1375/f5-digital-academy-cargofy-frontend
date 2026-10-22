@@ -8,16 +8,16 @@ import PageBanner from '@/components/PageBanner.vue'
 const account = useAccountStore()
 
 const TABS = [
-  { id: 'profile', label: 'Profile Info' },
-  { id: 'company', label: 'Company Info' },
-  { id: 'password', label: 'Change Password' },
+  { id: 'profile', labelKey: 'account.tabs.profile' },
+  { id: 'company', labelKey: 'account.tabs.company' },
+  { id: 'password', labelKey: 'account.tabs.password' },
 ]
 
 const activeTab = ref('profile')
 const form = reactive({ name: '', email: '', companyName: '' })
 const passwordForm = reactive({ currentPassword: '', newPassword: '', confirmPassword: '' })
 const errors = ref({})
-const successMessage = ref('')
+const successKey = ref('')
 
 function fillForm() {
   form.name = account.profile.name
@@ -33,13 +33,13 @@ async function load() {
 function selectTab(id) {
   activeTab.value = id
   errors.value = {}
-  successMessage.value = ''
+  successKey.value = ''
   account.clearSaveError()
   if (account.profile) fillForm()
 }
 
 async function submitProfile() {
-  successMessage.value = ''
+  successKey.value = ''
   account.clearSaveError()
   errors.value = validateProfile(form)
   if (Object.keys(errors.value).length > 0) return
@@ -51,12 +51,12 @@ async function submitProfile() {
   })
   if (ok) {
     fillForm()
-    successMessage.value = 'Changes saved'
+    successKey.value = 'account.saved'
   }
 }
 
 async function submitPassword() {
-  successMessage.value = ''
+  successKey.value = ''
   account.clearSaveError()
   errors.value = validatePasswordChange(passwordForm)
   if (Object.keys(errors.value).length > 0) return
@@ -69,7 +69,7 @@ async function submitPassword() {
     passwordForm.currentPassword = ''
     passwordForm.newPassword = ''
     passwordForm.confirmPassword = ''
-    successMessage.value = 'Password updated'
+    successKey.value = 'account.passwordUpdated'
   }
 }
 
@@ -81,16 +81,15 @@ onMounted(load)
     <AppNav />
 
     <main class="account">
-      <PageBanner
-        title="Account & Settings"
-        subtitle="Manage your profile, company details and password."
-      />
+      <PageBanner :title="$t('banner.account.title')" :subtitle="$t('banner.account.subtitle')" />
 
-      <p v-if="account.loading" class="account__status">Loading your account...</p>
+      <p v-if="account.loading" class="account__status">{{ $t('account.loading') }}</p>
 
       <div v-else-if="account.loadError" class="account__status" role="alert">
         <p class="account__error">{{ account.loadError }}</p>
-        <button type="button" class="btn btn--secondary" @click="load">Try again</button>
+        <button type="button" class="btn btn--secondary" @click="load">
+          {{ $t('common.tryAgain') }}
+        </button>
       </div>
 
       <template v-else-if="account.profile">
@@ -105,7 +104,7 @@ onMounted(load)
             :aria-selected="activeTab === tab.id"
             @click="selectTab(tab.id)"
           >
-            {{ tab.label }}
+            {{ $t(tab.labelKey) }}
           </button>
         </div>
 
@@ -117,7 +116,7 @@ onMounted(load)
         >
           <template v-if="activeTab === 'profile'">
             <div class="field">
-              <label for="name">Full Name</label>
+              <label for="name">{{ $t('account.fullName') }}</label>
               <input
                 id="name"
                 v-model="form.name"
@@ -129,7 +128,7 @@ onMounted(load)
             </div>
 
             <div class="field">
-              <label for="email">Email Address</label>
+              <label for="email">{{ $t('account.email') }}</label>
               <input
                 id="email"
                 v-model="form.email"
@@ -142,7 +141,7 @@ onMounted(load)
           </template>
 
           <div v-else class="field">
-            <label for="company">Company Name</label>
+            <label for="company">{{ $t('account.companyName') }}</label>
             <input
               id="company"
               v-model="form.companyName"
@@ -154,16 +153,16 @@ onMounted(load)
           <p v-if="account.saveError" class="account__error" role="alert">
             {{ account.saveError }}
           </p>
-          <p v-if="successMessage" class="account__success" role="status">{{ successMessage }}</p>
+          <p v-if="successKey" class="account__success" role="status">{{ $t(successKey) }}</p>
 
           <button type="submit" class="btn btn--primary" :disabled="account.saving">
-            {{ account.saving ? 'Saving...' : 'Save Changes' }}
+            {{ account.saving ? $t('account.saving') : $t('account.saveChanges') }}
           </button>
         </form>
 
         <form v-else class="account__form" novalidate @submit.prevent="submitPassword">
           <div class="field">
-            <label for="current-password">Current Password</label>
+            <label for="current-password">{{ $t('account.currentPassword') }}</label>
             <input
               id="current-password"
               v-model="passwordForm.currentPassword"
@@ -175,7 +174,7 @@ onMounted(load)
           </div>
 
           <div class="field">
-            <label for="new-password">New Password</label>
+            <label for="new-password">{{ $t('account.newPassword') }}</label>
             <input
               id="new-password"
               v-model="passwordForm.newPassword"
@@ -187,7 +186,7 @@ onMounted(load)
           </div>
 
           <div class="field">
-            <label for="confirm-password">Confirm New Password</label>
+            <label for="confirm-password">{{ $t('account.confirmPassword') }}</label>
             <input
               id="confirm-password"
               v-model="passwordForm.confirmPassword"
@@ -201,10 +200,10 @@ onMounted(load)
           <p v-if="account.saveError" class="account__error" role="alert">
             {{ account.saveError }}
           </p>
-          <p v-if="successMessage" class="account__success" role="status">{{ successMessage }}</p>
+          <p v-if="successKey" class="account__success" role="status">{{ $t(successKey) }}</p>
 
           <button type="submit" class="btn btn--primary" :disabled="account.saving">
-            {{ account.saving ? 'Saving...' : 'Update Password' }}
+            {{ account.saving ? $t('account.saving') : $t('account.updatePassword') }}
           </button>
         </form>
       </template>

@@ -1,6 +1,7 @@
 <script setup>
 import { getStatusInfo } from '@/utils/shipmentStatus'
 import { formatDate } from '@/utils/format'
+import { getLocaleTag } from '@/i18n'
 
 defineProps({
   history: { type: Array, default: () => [] },
@@ -8,20 +9,18 @@ defineProps({
 
 function formatTime(value) {
   if (!value) return ''
-  return new Date(value).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  return new Date(value).toLocaleTimeString(getLocaleTag(), { hour: '2-digit', minute: '2-digit' })
 }
 </script>
 
 <template>
   <section class="timeline">
     <div class="timeline__header">
-      <h2>Shipment History</h2>
-      <span v-if="history.length">
-        {{ history.length }} {{ history.length === 1 ? 'Update' : 'Updates' }}
-      </span>
+      <h2>{{ $t('timeline.title') }}</h2>
+      <span v-if="history.length">{{ $t('timeline.updates', history.length) }}</span>
     </div>
 
-    <p v-if="history.length === 0" class="timeline__empty">No status updates yet.</p>
+    <p v-if="history.length === 0" class="timeline__empty">{{ $t('timeline.empty') }}</p>
 
     <ol v-else class="timeline__list">
       <li
@@ -35,7 +34,9 @@ function formatTime(value) {
         <div class="timeline__row">
           <p class="timeline__status">
             {{ getStatusInfo(entry.status).label }}
-            <span v-if="index === history.length - 1" class="timeline__badge">Current</span>
+            <span v-if="index === history.length - 1" class="timeline__badge">{{
+              $t('timeline.current')
+            }}</span>
           </p>
           <span class="timeline__date">{{ formatDate(entry.updatedDate) }}</span>
         </div>

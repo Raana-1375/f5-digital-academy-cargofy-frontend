@@ -1,6 +1,12 @@
+import i18n from '@/i18n'
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const MIN_PASSWORD_LENGTH = 8
+
+function t(key, params) {
+  return i18n.global.t(key, params ?? {})
+}
 
 export function isValidEmail(email) {
   return EMAIL_PATTERN.test(email.trim())
@@ -14,13 +20,13 @@ export function validateSignIn({ email, password }) {
   const errors = {}
 
   if (!email.trim()) {
-    errors.email = 'Email is required'
+    errors.email = t('validation.emailRequired')
   } else if (!isValidEmail(email)) {
-    errors.email = 'Enter a valid email address'
+    errors.email = t('validation.emailInvalid')
   }
 
   if (!password) {
-    errors.password = 'Password is required'
+    errors.password = t('validation.passwordRequired')
   }
 
   return errors
@@ -37,31 +43,31 @@ export function validateSignUp({
   const errors = {}
 
   if (!fullName.trim()) {
-    errors.fullName = 'Full name is required'
+    errors.fullName = t('validation.fullNameRequired')
   }
 
   if (!email.trim()) {
-    errors.email = 'Email is required'
+    errors.email = t('validation.emailRequired')
   } else if (!isValidEmail(email)) {
-    errors.email = 'Enter a valid email address'
+    errors.email = t('validation.emailInvalid')
   }
 
   if (!role) {
-    errors.role = 'Select your role'
+    errors.role = t('validation.roleRequired')
   }
 
   if (role === 'OPERATOR' && !operatorAccessCode?.trim()) {
-    errors.operatorAccessCode = 'Operator access code is required'
+    errors.operatorAccessCode = t('validation.accessCodeRequired')
   }
 
   if (!password) {
-    errors.password = 'Password is required'
+    errors.password = t('validation.passwordRequired')
   } else if (!isValidPassword(password)) {
-    errors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
+    errors.password = t('validation.passwordMin', { min: MIN_PASSWORD_LENGTH })
   }
 
   if (confirmPassword !== password) {
-    errors.confirmPassword = 'Passwords do not match'
+    errors.confirmPassword = t('validation.passwordsMismatch')
   }
 
   return errors
@@ -86,43 +92,43 @@ export function validateNewShipment({
   const errors = {}
 
   if (!origin || !origin.trim()) {
-    errors.origin = 'Origin is required'
+    errors.origin = t('validation.originRequired')
   }
 
   if (!destination || !destination.trim()) {
-    errors.destination = 'Destination is required'
+    errors.destination = t('validation.destinationRequired')
   }
 
   if (!transportMode) {
-    errors.transportMode = 'Transport mode is required'
+    errors.transportMode = t('validation.transportRequired')
   }
 
   if (!packageType) {
-    errors.packageType = 'Package type is required'
+    errors.packageType = t('validation.packageRequired')
   }
 
   if (quantity === '' || quantity === null || quantity === undefined) {
-    errors.quantity = 'Quantity is required'
+    errors.quantity = t('validation.quantityRequired')
   } else if (!Number.isInteger(Number(quantity)) || Number(quantity) < 1) {
-    errors.quantity = 'Quantity must be at least 1'
+    errors.quantity = t('validation.quantityMin')
   }
 
   if (weightKg === '' || weightKg === null || weightKg === undefined) {
-    errors.weightKg = 'Weight is required'
+    errors.weightKg = t('validation.weightRequired')
   } else if (!(Number(weightKg) > 0)) {
-    errors.weightKg = 'Weight must be greater than 0'
+    errors.weightKg = t('validation.weightPositive')
   }
 
   if (goodsDescription && goodsDescription.length > GOODS_DESCRIPTION_MAX_LENGTH) {
-    errors.goodsDescription = `Goods description must be at most ${GOODS_DESCRIPTION_MAX_LENGTH} characters`
+    errors.goodsDescription = t('validation.goodsMax', { max: GOODS_DESCRIPTION_MAX_LENGTH })
   }
 
   if (hsCode && !HS_CODE_PATTERN.test(hsCode.trim())) {
-    errors.hsCode = 'HS code must contain 6 to 10 digits'
+    errors.hsCode = t('validation.hsInvalid')
   }
 
   if (note && note.length > NOTE_MAX_LENGTH) {
-    errors.note = `Notes must be at most ${NOTE_MAX_LENGTH} characters`
+    errors.note = t('validation.noteMax', { max: NOTE_MAX_LENGTH })
   }
 
   return errors
@@ -132,13 +138,13 @@ export function validateProfile({ name, email }) {
   const errors = {}
 
   if (!name.trim()) {
-    errors.name = 'Full name is required'
+    errors.name = t('validation.fullNameRequired')
   }
 
   if (!email.trim()) {
-    errors.email = 'Email is required'
+    errors.email = t('validation.emailRequired')
   } else if (!isValidEmail(email)) {
-    errors.email = 'Enter a valid email address'
+    errors.email = t('validation.emailInvalid')
   }
 
   return errors
@@ -148,17 +154,17 @@ export function validatePasswordChange({ currentPassword, newPassword, confirmPa
   const errors = {}
 
   if (!currentPassword) {
-    errors.currentPassword = 'Current password is required'
+    errors.currentPassword = t('validation.currentPasswordRequired')
   }
 
   if (!newPassword) {
-    errors.newPassword = 'New password is required'
+    errors.newPassword = t('validation.newPasswordRequired')
   } else if (!isValidPassword(newPassword)) {
-    errors.newPassword = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
+    errors.newPassword = t('validation.passwordMin', { min: MIN_PASSWORD_LENGTH })
   }
 
   if (confirmPassword !== newPassword) {
-    errors.confirmPassword = 'Passwords do not match'
+    errors.confirmPassword = t('validation.passwordsMismatch')
   }
 
   return errors
