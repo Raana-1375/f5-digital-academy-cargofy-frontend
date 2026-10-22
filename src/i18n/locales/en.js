@@ -12,4 +12,19 @@ export default {
     createShipment: 'Create new shipment',
     mainNavigation: 'Main navigation',
   },
+  footer: {
+    description: 'International shipment tracking for air, sea and road freight.',
+    modesLabel: 'Transport modes',
+    modes: {
+      air: 'Air',
+      sea: 'Sea',
+      road: 'Road',
+    },
+    navLabel: 'Footer navigation',
+    quickLinks: 'Quick links',
+    contact: 'Contact',
+    support: 'Support: Mon–Fri, 9:00–18:00',
+    rights: '© {year} Cargofy. All rights reserved.',
+    demo: 'Demo project built at Factoría F5',
+  },
 }
