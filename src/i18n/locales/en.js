@@ -81,6 +81,26 @@ export default {
     saving: 'Saving...',
     confirm: 'Confirm',
   },
+
+  account: {
+    loading: 'Loading your account...',
+    tabs: {
+      profile: 'Profile Info',
+      company: 'Company Info',
+      password: 'Change Password',
+    },
+    fullName: 'Full Name',
+    email: 'Email Address',
+    companyName: 'Company Name',
+    currentPassword: 'Current Password',
+    newPassword: 'New Password',
+    confirmPassword: 'Confirm New Password',
+    saveChanges: 'Save Changes',
+    updatePassword: 'Update Password',
+    saving: 'Saving...',
+    saved: 'Changes saved',
+    passwordUpdated: 'Password updated',
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',

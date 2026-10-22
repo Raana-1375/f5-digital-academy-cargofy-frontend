@@ -82,6 +82,26 @@ export default {
     saving: 'Guardando...',
     confirm: 'Confirmar',
   },
+
+  account: {
+    loading: 'Cargando tu cuenta...',
+    tabs: {
+      profile: 'Datos del perfil',
+      company: 'Datos de la empresa',
+      password: 'Cambiar contraseña',
+    },
+    fullName: 'Nombre completo',
+    email: 'Correo electrónico',
+    companyName: 'Nombre de la empresa',
+    currentPassword: 'Contraseña actual',
+    newPassword: 'Nueva contraseña',
+    confirmPassword: 'Confirmar nueva contraseña',
+    saveChanges: 'Guardar cambios',
+    updatePassword: 'Actualizar contraseña',
+    saving: 'Guardando...',
+    saved: 'Cambios guardados',
+    passwordUpdated: 'Contraseña actualizada',
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',
