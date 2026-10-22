@@ -170,6 +170,22 @@ export default {
     currentPasswordRequired: 'La contraseña actual es obligatoria',
     newPasswordRequired: 'La nueva contraseña es obligatoria',
   },
+
+  auth: {
+    email: 'Correo electrónico',
+    password: 'Contraseña',
+    showPassword: 'Mostrar contraseña',
+    hidePassword: 'Ocultar contraseña',
+    or: 'O',
+    createAccount: 'Crear cuenta',
+    address: 'Calle Comercio 42, Gijón, España',
+    signIn: {
+      title: 'Iniciar sesión',
+      subtitle: 'Introduce tus credenciales para rastrear y gestionar envíos',
+      submit: 'Iniciar sesión →',
+      submitting: 'Iniciando sesión...',
+    },
+  },
   common: {
     loading: 'Cargando...',
     tryAgain: 'Reintentar',

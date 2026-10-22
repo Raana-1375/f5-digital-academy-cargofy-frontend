@@ -169,6 +169,22 @@ export default {
     currentPasswordRequired: 'Current password is required',
     newPasswordRequired: 'New password is required',
   },
+
+  auth: {
+    email: 'Email Address',
+    password: 'Password',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
+    or: 'OR',
+    createAccount: 'Create Account',
+    address: 'Calle Comercio 42, Gijón, Spain',
+    signIn: {
+      title: 'Sign In',
+      subtitle: 'Enter your credentials to track and manage shipments',
+      submit: 'Sign In →',
+      submitting: 'Signing in...',
+    },
+  },
   common: {
     loading: 'Loading...',
     tryAgain: 'Try again',
